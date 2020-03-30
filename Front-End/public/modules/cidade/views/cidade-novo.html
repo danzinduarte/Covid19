@@ -1,0 +1,38 @@
+<form ng-cloak name="vm.form">
+    <div layout="column">
+        <div>
+            <div>
+              <md-button class="md-warn " ng-click= vm.cancelar()> Voltar Lista Cidades
+                <md-icon md-svg-src="assets/img/cancel.svg"></md-icon>
+              </md-button>
+            </div>
+            <div layout = "row">
+              <div flex="80">
+                <label>Adicionar Cidade</label>
+              </div>
+            </div>
+        </div>
+        <md-content class="md-padding">
+            <div layout="column" flex="30">
+                <md-input-container >
+                    <label>Nome Da Cidade</label>
+                    <input ng-model="vm.dataset.nome" type="text" name="nome" ng-required="true">        
+                </md-input-container >
+                <md-input-container md-no-float class="md-block" flex>
+                    <md-tooltip>Estado</md-tooltip>
+                      <md-icon md-svg-src="assets/img/estado.svg" style="display:inline-block;"></md-icon>
+                        <label>Estado</label>
+                          <md-select ng-model="vm.dataset.uf" flex>
+                            <md-option ng-repeat="estado in vm.estados" ng-value="estado.abbrev">
+                              {{estado.abbrev}}
+                            </md-option>
+                          </md-select>
+                  </md-input-container>
+            </div>   
+            <md-button type="submit" ng-click="vm.form.$valid && vm.salvaCidade()"  aria-label="Salvar Dados"> Salvar
+                <md-icon md-svg-src="assets/img/save.svg"></md-icon>
+            </md-button>  
+        </md-content>  
+        
+    </div>
+</form>

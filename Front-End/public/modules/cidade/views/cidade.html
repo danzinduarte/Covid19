@@ -1,0 +1,60 @@
+<div layout="column">
+  <div>
+    <div>
+      <md-button class="md-raised md-primary" ng-click= vm.voltar()> Voltar Quadro Geral
+        <md-icon md-svg-src="assets/img/cancel.svg"></md-icon>
+      </md-button>
+    </div>
+    <div layout = "row">
+      <div flex="80">
+        <label>Cidades</label>
+      </div>
+      <md-button class="md-raised md-primary" layout-align="end" type="submit" ng-click="vm.novaCidade()"  aria-label="Salvar Dados"> Adicionar Cidade
+      </md-button>
+    </div>
+  </div>
+  <div class="container">
+    <div class="col-md-12">
+        <table id="quadro">
+            <thead text-align="center center" >
+                <tr>
+                    <th ng-click = "vm.ordenar('id')"> Codigo </th>
+                    <th ng-click = "vm.ordenar('cidade')">Cidade</th>
+                    <th ng-click = "vm.ordenar('distrito')"> Uf</th>
+                    <th ng-click = "vm.ordenar('subDistrito')"> #</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="cidade in vm.dataset | filter: orderBy:vm.sortKey">
+                    <td>{{cidade.id}}</td>
+                    <td>{{cidade.nome}}</td>
+                    <td>{{cidade.uf}}</td>
+                    <td>
+                      <md-button  ng-click= vm.editaCidade(cidade.id)>
+                        <md-icon md-svg-src="assets/img/edit.svg"></md-icon>
+                        Editar
+                      </md-button>
+                      <md-button  ng-click="ctrl.openDialog($event)" >
+                        <md-icon md-svg-src="assets/img/open.svg"></md-icon>
+                        Ver
+                      </md-button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+            
+            <div layout="row" layout-align="center">
+                <md-button ng-click="vm.retornar()" aria-label="sf">
+                    <md-icon md-svg-src="assets/img/left-arrow.svg"></md-icon>
+                </md-button>
+                    <br>
+                    Página: {{vm.index}}
+                <md-button ng-click="vm.avancar()" aria-label="sf">
+                    <md-icon md-svg-src="assets/img/rigth-arrow.svg"></md-icon>
+                </md-button>
+            </div>
+    </div>
+</div>
+</div> 
+
+    

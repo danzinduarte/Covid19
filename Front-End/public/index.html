@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Covid-19 :: Mapeador</title>
+
+  <base href="/" />
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+  <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Open+Sans:400,700'>
+
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="/scripts/angular-material/angular-material.min.css"/>
+
+  <link rel="stylesheet" href="./assets/main.css"/>
+  
+
+  <!-- Toast -->
+  <link rel="stylesheet" href="/scripts/toastr/build/toastr.min.css">
+</head>
+
+<body ng-app="materialApp" layout="column" ng-controller="appCtrl as app" class="background">
+    <div ui-view="login" layout-fill="">
+    <md-sidenav class="md-sidenav-left md-whiteframe-4dp ng-cloak" md-component-id="left">
+
+        <md-toolbar class="md-toolbar-tools" layout="row" layout-align="center-center">
+
+            <md-button ng-click="app.toggleLeft()" class="md-icon-button" aria-label="Close User Menu">
+              <md-icon md-font-icon="fa-bars" class="md-menu-text-color fa s24"></md-icon>
+            </md-button>
+
+            <h3 class="md-toolbar-tools">Menu</h3>
+        
+        </md-toolbar>
+
+        <md-list-item layout="row" ng-click="app.toggleLeft()" href="/quadro">
+            <span>Quadro</span>
+        </md-list-item>
+        <md-divider></md-divider>
+    
+        <md-list-item layout="row" ng-click="app.toggleLeft()" href="/cidade">
+            <span>Cidades</span>
+        </md-list-item>
+        <md-list-item layout="row" ng-click="app.toggleLeft()" href="/pessoa">
+            <span>Pessoas</span>
+        </md-list-item>
+        <md-divider></md-divider>
+    </md-sidenav>
+
+    <md-sidenav class="md-sidenav-right md-whiteframe-4dp ng-cloak" md-component-id="right">
+
+        <md-toolbar class="md-toolbar-tools" layout="row" layout-align="space-between-center">
+            <h3 class="md-toolbar-tools"> Menu</h3>
+            
+            <md-button ng-click="app.toggleRight()" class="md-icon-button" aria-label="Close User Menu">
+              <md-icon md-font-icon="fa-user" class="md-menu-text-color fa s24"></md-icon>
+            </md-button>
+
+        </md-toolbar>      
+
+    </md-sidenav>
+
+<div class="ng-cloak">
+    <md-toolbar class="toolbar md-whiteframe-3dp">
+        <div layout="row"  layout-wrap class="md-toolbar-tools">
+            <md-button ng-click="app.toggleLeft()" class="md-icon-button" aria-label="Main Menu">
+              <md-icon md-font-icon="fa-bars" class="md-menu-text-color fa s24"></md-icon>
+            </md-button>    
+            <span flex>
+                <div layout="row" layout-align="center center" layout-wrap>
+                    <h1  class="md-headline">Covid-19 :: Mapeador</h1>
+                </div>
+            </span>
+            
+        </div>
+        
+    </md-toolbar>
+
+    <div layout="column" layout-align="center center" style="height: 75%">
+            <md-card flex class="card-central padding-inner md-whiteframe-2dp" 
+            style="width: 70%; min-height: 300px;">
+                <md-content flex style="background-color: white;" ui-view></md-content>
+            </md-card>
+            
+    </div>
+
+</div>
+</div>
+
+<script src="/scripts/angular/angular.min.js"></script>
+<script src="/scripts/angular-animate/angular-animate.min.js"></script>
+<script src="/scripts/angular-aria/angular-aria.min.js"></script>
+<script src="/scripts/angular-material/angular-material.min.js"></script>
+<script src="/scripts/angular-resource/angular-resource.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-messages.min.js"></script>
+
+<script type="text/javascript" src="/scripts/angular-ui-router/release/angular-ui-router.min.js"></script>
+
+
+<script src="/scripts/ngstorage/ngstorage.min.js"></script>
+<script src="/scripts/jquery/dist/jquery.min.js"></script>
+<script src="/scripts/toastr/toastr.js"></script>
+<script src="/scripts/moment/min/moment.min.js"></script>
+
+<script src="modules/cidade/cidade.module.js"></script>
+<script src="modules/cidade/controllers/cidade.controller.js"></script>
+<script src="modules/cidade/controllers/cidade-edita.controller.js"></script>
+<script src="modules/cidade/services/cidade.service.js"></script>
+
+<script src="modules/pessoa/pessoa.module.js"></script>
+<script src="modules/pessoa/controllers/pessoa.controller.js"></script>
+<script src="modules/pessoa/controllers/pessoa-edita.controller.js"></script>
+<script src="modules/pessoa/services/pessoa.service.js"></script>
+
+<script src="modules/quadro/quadro.module.js"></script>
+<script src="modules/quadro/controllers/quadro.controller.js"></script>
+<script src="modules/quadro/services/quadro.service.js"></script>
+
+<script src="app.controller.js"></script>
+
+<script src="app.js"></script>
+<script src="app.routes.js"></script>
+<script src="app.api.js"></script>
+
+</body>
+</html>

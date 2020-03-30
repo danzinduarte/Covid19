@@ -1,0 +1,46 @@
+<md-toolbar>
+    <md-fab-actions class="md-toolbar-tools">
+        <md-button class="md-icon-button" ng-click="vm.novoPrato()">
+            <md-tooltip md-direction="right">Cadastrar Prato</md-tooltip>
+            <md-icon md-svg-src="assets/img/plus.svg"></md-icon>
+        </md-button>
+            
+    </md-fab-actions>
+</md-toolbar>
+<div layout="column">
+    <div ng-if="vm.dataset.length == 0" class="span">
+        <span>Não existe pratos cadastrados no momento</span>
+    </div>
+    <md-card class="row-card md-whiteframe-20dp" ng-repeat="pratos in vm.dataset">
+        <div layout="row">
+            <div layout="column" flex>
+                <div layout="row">
+                    <span flex></span>                 
+                    <md-menu>
+                        <md-button class="md-icon-button" ng-click="$mdMenu.open($event)">
+                            <img src="/assets/img/mote_vert.png" >                     
+                        </md-button>
+                        <md-menu-content width="3">
+                            <md-menu-item>
+                                <md-button ng-click="vm.editaPrato(pratos.id)"> Editar </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button ng-click="vm.excluiPrato($event,pratos)"> Excluir</md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+  
+                </div>
+  
+                <div layout="column" layout-align="start start">               
+                    <span class="font-size-18 texto-cinza-medio negrito"> Restaurante: {{pratos.restaurante.nomeDoRestaurante}}</span>
+                    <span class="font-size-18 texto-cinza-medio negrito"> Prato: {{pratos.nomeDoPrato}}</span>
+                    <span class="font-size-18 texto-cinza-medio negrito"> Preço: R$ {{pratos.preco}}</span>
+                    
+                </div>
+            </div>
+        </div>    
+    </md-card>
+</div>
+
+
