@@ -19,6 +19,11 @@
             method : 'PUT'
         }
       })
+      api.pessoa = $resource(api.baseUrl + 'pessoa/:id' , {id :'@id'}, {
+        update : {
+            method : 'PUT'
+        }
+      })
       api.quadro = $resource(api.baseUrl + 'quadro/:id' , {id :'@id'}, {
         update : {
             method : 'PUT'

@@ -3,10 +3,18 @@ angular.module('app.cidade')
     
     var cidadeFactory = {};
 
-    cidadeFactory.getAll = function (cidadeId){
+    cidadeFactory.getAll = function(coluna) {
         var ds = new api.cidade();
-        return ds.$get({cidade : cidadeId})
-    }
+            return ds.$get({coluna : coluna})
+    };
+
+    cidadeFactory.getCidade = function(cidade, coluna) {
+        if(cidade.length < 3)
+            cidade = null
+       
+        var ds = new api.returnCidade();
+            return ds.$get({cidade : cidade, coluna})
+    };
     cidadeFactory.getById =function(cidadeId) {
         var ds      = new api.cidade();
         ds.id   = cidadeId;
@@ -15,8 +23,8 @@ angular.module('app.cidade')
 
     cidadeFactory.save = function(cidadeModel){
         var ds               = new api.cidade();
-        ds.nome = cidadeModel.nome;
-        ds.uf   = cidadeModel.uf;
+        ds.nome              = cidadeModel.nome;
+        ds.uf                = cidadeModel.uf;
         ds.id                = cidadeModel.id;
             if (ds.id) {
                 return ds.$update();

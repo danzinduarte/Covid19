@@ -7,9 +7,9 @@
     </div>
     <div layout = "row">
       <div flex="80">
-        <label>Cidades</label>
+        <label>Pessoas</label>
       </div>
-      <md-button class="md-raised md-primary" layout-align="end" type="submit" ng-click="vm.novaCidade()"  aria-label="Salvar Dados"> Adicionar Cidade
+      <md-button class="md-raised md-primary" layout-align="end" type="submit" ng-click="vm.novaPessoa()"  aria-label="Salvar Dados"> Adicionar Pessoa
       </md-button>
     </div>
   </div>
@@ -19,22 +19,26 @@
             <thead text-align="center center" >
                 <tr>
                     <th ng-click = "vm.ordenar('id')"> Codigo </th>
+                    <th ng-click = "vm.ordenar('nome')">Nome</th>
                     <th ng-click = "vm.ordenar('cidade')">Cidade</th>
                     <th ng-click = "vm.ordenar('distrito')"> Uf</th>
+                    <th ng-click = "vm.ordenar('situacao')"> Situacao </th>
                     <th ng-click = "vm.ordenar('subDistrito')"> #</th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="cidade in vm.dataset | filter: orderBy:vm.sortKey">
-                    <td>{{cidade.id}}</td>
-                    <td>{{cidade.nome}}</td>
-                    <td>{{cidade.uf}}</td>
+                <tr ng-repeat="pessoa in vm.dataset | filter: orderBy:vm.sortKey">
+                    <td>{{pessoa.id}}</td>
+                    <td>{{pessoa.nome}}</td>
+                    <td>{{pessoa.cidade.nome}}</td>
+                    <td>{{pessoa.cidade.uf}}</td>
+                    <td>{{pessoa.situacao}}</td>
                     <td>
-                      <md-button  ng-click= vm.editaCidade(cidade.id)>
+                      <md-button  ng-click= vm.editaPessoa(pessoa.id)>
                         <md-icon md-svg-src="assets/img/edit.svg"></md-icon>
                         Editar
                       </md-button>
-                      <md-button  ng-click="abrirJanela($ev, cidade.id)" >
+                      <md-button  ng-click="ctrl.openDialog($event)" >
                         <md-icon md-svg-src="assets/img/open.svg"></md-icon>
                         Ver
                       </md-button>

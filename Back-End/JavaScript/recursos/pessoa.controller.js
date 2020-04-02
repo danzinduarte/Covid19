@@ -73,17 +73,18 @@ function salvaPessoa(req,res){
 	}
 	pessoa.situacao = 1
 	dataContext.Pessoa.create(pessoa)
-	.then((pessoa) => {
+	.then(function(novaPessoa){
 		return res.status(201).json({
-			success : true,
-			data : pessoa,
+			successo : true,
+			data : novaPessoa,
 			msg : 'Pessoa criada com sucesso'
 		})
 	})
 	.catch((err) => {
 		return res.status(400).json({
-			success : false,
-			msg : 'Houve um erro ao incluir a pessoa'
+			successo : false,
+			msg : 'Falha ao incluir a pessoa',
+			erros : err
 		})
 	})
 }
