@@ -25,6 +25,9 @@
                             <div ng-message="required">Por favor Insira um Estado</div>
                           </div>     
                   </md-input-container>
+                  <md-button type="submit" ng-click="vm.form.$valid && vm.excluiCidade($ev)"> Excluir
+                    <md-icon md-svg-src="assets/img/delete.svg"></md-icon>
+                  </md-button> 
             </div>   
         </md-content>   
     </div>
