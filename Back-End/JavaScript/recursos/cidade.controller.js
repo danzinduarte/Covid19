@@ -81,25 +81,47 @@ function salvaCidade(req,res){
 }
 function excluiCidade(req,res)
 {
+	
 	if (!req.params.id) {
 		return res.status(400).json({
 			sucesso: false,
 			msg: "Formato de entrada inválido."
 		});
 	}
+	
+	if(req.params.id){
+		dataContext.Pessoa.findAll({
+			where : {
+				cidade_id: {
+					[Op.eq] : req.params.id
+				}
+			}
+		})
+		.then(function(pessoasRetornadas) {				
+			res.status(404).json({
+				sucesso: false,
+				msg: "A cidade está sendo usada!",
+				erro : pessoasRetornadas
+			})
+		})
+	}
+	
+	
 
-	// Quando tu for trabalhar com apenas um model e que ele nao vai fazer outras insercoes em outras tabelas, vc nao precisa utilizar transacao
+	
+	// Quando tu for trabalhar com apenas um model e que ele nao vai fazer outras insercoes em outras tabelas, 
+	//vc nao precisa utilizar transacao
 	dataContext.Cidade.findByPk(req.params.id)
-		.then( function(restaurante){
+		.then( function(cidade){
 		
-		if (!restaurante) {
+		if (!cidade) {
 			return res.status(404).json({
 				sucesso: false,
 				msg: "Cidade não encontrada."
 			})
 		}
 
-		//restaurante = restaurante.get({ plain : true })
+		
 		dataContext.Cidade.destroy({ where : { id : req.params.id }})
 		.then(function(result) {
 			return res.status(200).json({

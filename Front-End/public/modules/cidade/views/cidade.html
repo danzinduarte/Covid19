@@ -1,15 +1,13 @@
 <div layout="column">
   <div>
-    <div>
+      <div >
+        <label>Cidades</label>
+      </div>
+    <div layout = "row">
       <md-button class="md-raised md-primary" ng-click= vm.voltar()> Voltar Quadro Geral
         <md-icon md-svg-src="assets/img/cancel.svg"></md-icon>
       </md-button>
-    </div>
-    <div layout = "row">
-      <div flex="80">
-        <label>Cidades</label>
-      </div>
-      <md-button class="md-raised md-primary" layout-align="end" type="submit" ng-click="vm.novaCidade()"  aria-label="Salvar Dados"> Adicionar Cidade
+      <md-button class="md-raised md-primary"  type="submit" ng-click="vm.novaCidade()"  aria-label="Salvar Dados"> Adicionar Cidade
       </md-button>
     </div>
   </div>
@@ -34,7 +32,7 @@
                         <md-icon md-svg-src="assets/img/edit.svg"></md-icon>
                         Editar
                       </md-button>
-                      <md-button  ng-click="abrirJanela($ev, cidade.id)" >
+                      <md-button  ng-click="vm.listaCidade(cidade.id)" >
                         <md-icon md-svg-src="assets/img/open.svg"></md-icon>
                         Ver
                       </md-button>

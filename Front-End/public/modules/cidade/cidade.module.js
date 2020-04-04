@@ -51,5 +51,20 @@
           }    
       }
   })
+  .state('cidade-lista', {
+    url: '/cidade-lista/:id',
+    templateUrl: '/modules/cidade/views/cidade-lista.html',
+    controller: 'CidadeEditaController',
+    controllerAs: 'vm',
+    params: {
+        title: "Visualizar Cidade",
+    },
+    resolve : {
+      cidadeId : function($stateParams){
+            console.log('Modulo: ' + $stateParams.id)
+            return $stateParams.id;
+        }    
+    }
+})
   }  
 })()

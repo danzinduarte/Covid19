@@ -16,7 +16,7 @@ function CidadeEditaController(CidadeService, cidadeId, $state,$mdDialog )
            
             CidadeService.getById(cidadeId).then(function(cidadeModel){
                 vm.dataset = cidadeModel.data
-                console.log( vm.dataset)
+                
             })
         }
 	}

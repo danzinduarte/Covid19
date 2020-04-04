@@ -7,13 +7,12 @@ function CidadeController(CidadeService,$mdDialog, $state, $scope)
     vm.carregaCidades  = carregaCidades;
     vm.novaCidade      = novaCidade;
     vm.editaCidade     = editaCidade;
-    vm.excluiCidade    = excluiCidade;
-    vm.excluir         = excluir;
+    vm.listaCidade     = listaCidade;
     vm.voltar          = voltar;
     vm.avancar         = avancar;
     vm.retornar        = retornar;
     vm.buscaCidade     = buscaCidade;
-    vm.CidadeById      = CidadeById;
+   
     
     function init(){
             carregaCidades()
@@ -33,61 +32,14 @@ function CidadeController(CidadeService,$mdDialog, $state, $scope)
     function editaCidade(cidadeId) {
 		$state.go('cidade-edita', {id : cidadeId})		
     }
+    function listaCidade(cidadeId) {
+		$state.go('cidade-lista', {id : cidadeId})		
+    }
     function voltar() {
         $state.go('home')
     }
-    function excluiCidade(ev){
-		
-        let confirmacao = $mdDialog.confirm()
-                .title('Aguardando confirmação')
-                .textContent('Confirma a exclusao da cidade de ' + vm.dataset.nome)
-                .ariaLabel('Msg interna do botao')
-                .targetEvent(ev)
-                .ok('Sim')
-                .cancel('Não');
 
-        $mdDialog.show(confirmacao).then(function() {
-                vm.excluir(cidadeId)
-        });
-    }
     
-    function excluir(cidadeId){
-        let sucesso = function(resposta){			
-            if (resposta.sucesso) {
-                toastr.info('Cidade excluido com sucesso :)');
-            }
-            $state.go('cidade')
-        }
-
-        let erro = function(resposta){	
-            toastr.warning("Ocorreu um erro ao excluir a cidade!")
-            $state.go('cidade')	
-        }
-
-        CidadeService.delete(cidadeId).then(sucesso,erro) 
-    }
-    
-    $scope.abrirJanela = function($event, cidadeId) {
-        $mdDialog.show({
-          controller: 'CidadeEditaController',
-          controllerAs: 'vm',
-          url: '/cidade-lista/:id',
-          templateUrl: './modules/cidade/views/cidade-lista.html',
-          parent: angular.element(document.body),
-          targetEvent: $event,
-          params: {
-            title: "Ver Cidade",
-        },
-          clickOutsideToClose:true,
-          resolve : {
-            cidadeId : function($stateParams){
-                  console.log('Modulo: ' + $stateParams.id)
-                  return $stateParams.id;
-              }    
-          }
-        });
-        CidadeById(cidadeId)  
-    };        
       function avancar() {
         coluna += 10
         vm.index += 1
@@ -117,11 +69,6 @@ function CidadeController(CidadeService,$mdDialog, $state, $scope)
         cidadeService.getCidade(cidade,coluna).then(function(dados) {
             vm.dataset = dados.data
             return vm.dataset
-        })
-    }
-    function CidadeById(cidadeId){
-        CidadeService.getById(cidadeId).then(function(cidadeModel){
-            vm.dataset = cidadeModel.data
         })
     }
 }

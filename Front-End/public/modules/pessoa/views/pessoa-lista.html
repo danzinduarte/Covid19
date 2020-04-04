@@ -1,38 +1,30 @@
 <form ng-cloak name="vm.form">
-    <div layout="column">
-        <div>
-            <div>
-              <md-button class="md-warn " ng-click= vm.voltar()> Voltar Lista Pessoas
-                <md-icon md-svg-src="assets/img/cancel.svg"></md-icon>
-              </md-button>
-            </div>
-            <div layout = "row">
-              <div flex="80">
                 <label>Editar Pessoa</label>
-              </div>
-            </div>
         </div>
         <md-content class="md-padding">
-            <div layout="column" flex="30">
+            <div layout="row" >
                 <md-input-container >
                     <label>Nome Da Pessoa</label>
-                    <input ng-model="vm.dataset.nome" type="text" name="nome" ng-required="true">        
+                    <input ng-disabled="true" ng-model="vm.dataset.nome" type="text" name="nome" ng-required="true">        
                 </md-input-container >
-                <md-input-container md-no-float class="md-block" flex>
-                  <md-tooltip>Estado</md-tooltip>
-                    <md-icon md-svg-src="assets/img/estado.svg" style="display:inline-block;"></md-icon>
-                      <label>Estado</label>
-                        <md-select ng-model="vm.dataset.uf" flex>
-                          <md-option ng-repeat="estado in vm.estados" ng-value="estado.abbrev">
-                            {{estado.abbrev}}
-                          </md-option>
-                        </md-select>
-                </md-input-container>
+                <md-input-container >
+                  <label>Cidade</label>
+                  <input ng-disabled="true" ng-model="vm.dataset.cidade.nome" type="text" name="nome" ng-required="true">        
+              </md-input-container >
+            </div>
+            <div>
+              <md-input-container  class="data-picker-alinhado-esquerda">
+                <label >Data</label>
+                    <md-datepicker ng-disabled="true" ng-model="vm.dataset.data_nascimento"></md-datepicker>
+            </md-input-container> 
+            </div>
             </div>   
-            <md-button type="submit" ng-click="vm.form.$valid && vm.salvaPessoas()"  aria-label="Salvar Dados"> Salvar
-                <md-icon md-svg-src="assets/img/save.svg"></md-icon>
+            <md-button type="submit" ng-click="vm.form.$valid && vm.excluiPessoa($ev)"> Excluir
+              <md-icon md-svg-src="assets/img/delete.svg"></md-icon>
+            </md-button> 
+            <md-button  ng-click= vm.cancelar()> Voltar
+              <md-icon md-svg-src="assets/img/back.svg"></md-icon>
             </md-button>  
         </md-content>  
-        
     </div>
 </form>

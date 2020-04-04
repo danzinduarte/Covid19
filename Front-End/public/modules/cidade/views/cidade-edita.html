@@ -1,27 +1,18 @@
 <form ng-cloak name="vm.form">
     <div layout="column">
         <div>
-            <div>
-              <md-button class="md-warn " ng-click= vm.cancelar()> Voltar Lista Cidades
-                <md-icon md-svg-src="assets/img/cancel.svg"></md-icon>
-              </md-button>
-            </div>
-            <div layout = "row">
-              <div flex="80">
-                <label>Editar Cidade</label>
-              </div>
-            </div>
+          <label>Editar Cidade</label>
         </div>
         <md-content class="md-padding">
-            <div layout="row" flex="30">
-                <md-input-container >
+            <div layout="row"  >
+                <md-input-container flex="40" >
                     <label>Nome Da Cidade</label>
-                    <input ng-model="vm.dataset.nome" type="text" name="nome" ng-required="true">        
+                    <input ng-model="vm.dataset.nome" ng-value="vm.dataset.cidade.nome" type="text" name="nome" ng-required="true">        
                 </md-input-container >
-                <md-input-container md-no-float class="md-block" >
-                  <md-tooltip>UF ( Unidadde da Federação) *</md-tooltip>
+                <md-input-container md-no-float class="md-block" flex="20" >
+                  <md-tooltip>UF ( Unidade da Federação) *</md-tooltip>
                     <md-icon md-svg-src="assets/img/estado.svg" style="display:inline-block;"></md-icon>
-                      <label>UF ( Unidadde da Federação) *</label>
+                      <label>UF ( Unidade da Federação) *</label>
                         <md-select ng-model="vm.dataset.uf"  name="uf" ng-required="true">
                           <md-option ng-repeat="estado in vm.estados" ng-value="estado.abbrev">
                             {{estado.abbrev}}
@@ -35,10 +26,9 @@
             <md-button type="submit" ng-click="vm.form.$valid && vm.salvaCidade()"  aria-label="Salvar Dados"> Salvar
                 <md-icon md-svg-src="assets/img/save.svg"></md-icon>
             </md-button>  
-            <md-button type="submit" ng-click="vm.form.$valid && vm.excluiCidade($ev)"> Excluir
-              <md-icon md-svg-src="assets/img/delete.svg"></md-icon>
+            <md-button ng-click= vm.cancelar()> Voltar
+              <md-icon md-svg-src="assets/img/back.svg"></md-icon>
             </md-button> 
         </md-content>  
-        
     </div>
 </form>

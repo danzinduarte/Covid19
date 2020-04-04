@@ -51,5 +51,20 @@
           }    
       }
   })
+  .state('pessoa-lista', {
+    url: '/pessoa-lista/:id',
+    templateUrl: '/modules/pessoa/views/pessoa-lista.html',
+    controller: 'PessoaEditaController',
+    controllerAs: 'vm',
+    params: {
+        title: "Visualizar Pessoa",
+    },
+    resolve : {
+      pessoaId : function($stateParams){
+            console.log('Modulo: ' + $stateParams.id)
+            return $stateParams.id;
+        }    
+    }
+})
   }  
 })()

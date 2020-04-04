@@ -57,7 +57,7 @@ module.exports.initRelations = function() {
 
     Pessoa.belongsTo(Cidade, {
         foreignKey: 'cidade_id',
-        onDelete: 'CASCADE',
+        onDelete: 'RESTRICT',
         onUpdate: 'CASCADE'
     });
 };

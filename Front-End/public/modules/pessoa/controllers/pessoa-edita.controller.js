@@ -1,20 +1,23 @@
 angular.module('app.pessoa')
 .controller('PessoaEditaController', PessoaEditaController);
 
-function PessoaEditaController(PessoaService, pessoaId, CidadeService, $state)
+function PessoaEditaController(PessoaService, pessoaId, CidadeService, $mdDialog, $state)
 {
     vm = this;
     vm.dataset = {}
     vm.salvaPessoa          = salvaPessoa;
     vm.cancelar             = cancelar;
-    vm.carregaCidades       = carregaCidades ;
+    vm.carregaCidades       = carregaCidades;
     vm.cidadeService        = CidadeService;
+    vm.excluiPessoa         = excluiPessoa;
+    vm.excluir              = excluir;
     
     function init(){
 
         if (pessoaId) {
             PessoaService.getById(pessoaId).then(function(pessoaModel){
                 vm.dataset = pessoaModel.data
+                console.log(vm.dataset)
             })
         }
         carregaCidades();
@@ -76,5 +79,35 @@ function PessoaEditaController(PessoaService, pessoaId, CidadeService, $state)
     } 
     function cancelar() {
         $state.go('pessoa')
+    }
+    function excluiPessoa(ev){
+		
+        let confirmacao = $mdDialog.confirm()
+                .title('Aguardando confirmação')
+                .textContent('Confirma a exclusao do(a) ' + vm.dataset.nome)
+                .ariaLabel('Msg interna do botao')
+                .targetEvent(ev)
+                .ok('Sim')
+                .cancel('Não');
+
+        $mdDialog.show(confirmacao).then(function() {
+                vm.excluir(pessoaId)
+        });
+    }
+    
+    function excluir(pessoaId){
+        let sucesso = function(resposta){			
+            if (resposta.sucesso) {
+                toastr.info('Pessoa excluido com sucesso :)');
+            }
+            $state.go('pessoa')
+        }
+
+        let erro = function(resposta){	
+            toastr.warning("Ocorreu um erro ao excluir a pessoa!")
+            $state.go('pessoa')	
+        }
+
+        PessoaService.delete(pessoaId).then(sucesso,erro) 
     }
 }

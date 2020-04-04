@@ -7,9 +7,8 @@ function PessoaController(PessoaService,$mdDialog, $state)
     vm.carregaPessoas  = carregaPessoas;
     vm.novaPessoa      = novaPessoa;
     vm.editaPessoa     = editaPessoa;
-    vm.excluiPessoa    = excluiPessoa;
-    vm.excluir         = excluir;
     vm.voltar          = voltar;
+    vm.listaPessoa     = listaPessoa;
    
 
 
@@ -30,38 +29,11 @@ function PessoaController(PessoaService,$mdDialog, $state)
     function editaPessoa(pessoaId) {
 		$state.go('pessoa-edita', {id : pessoaId})		
     }
+    function listaPessoa(pessoaId) {
+		$state.go('pessoa-lista', {id : pessoaId})		
+    }
     function voltar() {
         $state.go('home')
-    }
-    function excluiPessoa(ev,pessoas){
-		
-        let confirmacao = $mdDialog.confirm()
-                .title('Aguardando confirmação')
-                .textContent('Confirma a exclusao da pessoa ' + pessoas.nome)
-                .ariaLabel('Msg interna do botao')
-                .targetEvent(ev)
-                .ok('Sim')
-                .cancel('Não');
-
-        $mdDialog.show(confirmacao).then(function() {
-                vm.excluir(pessoas.id)
-        });
-    }
-    
-    function excluir(pessoaId){
-        let sucesso = function(resposta){			
-            if (resposta.sucesso) {
-                toastr.info('Pessoa excluido com sucesso :)');
-            }
-            carregaPessoas();
-        }
-
-        let erro = function(resposta){	
-            toastr.warning("Ocorreu um erro ao excluir a pessoa!")
-            $state.go('pessoa')	
-        }
-
-        PessoaService.delete(pessoaId).then(sucesso,erro) 
     }
     function nomeSituacao(dsPessoa){
         vm.dataset = dsPessoa.map(function(resp){
