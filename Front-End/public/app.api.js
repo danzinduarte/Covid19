@@ -29,6 +29,11 @@
             method : 'PUT'
         }
       })
+      api.prontuario = $resource(api.baseUrl + 'prontuario/:id' , {id :'@id'}, {
+        update : {
+            method : 'PUT'
+        }
+      })
       return api;
     }
 

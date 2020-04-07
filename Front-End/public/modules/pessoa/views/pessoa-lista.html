@@ -1,30 +1,70 @@
 <form ng-cloak name="vm.form">
-                <label>Editar Pessoa</label>
-        </div>
-        <md-content class="md-padding">
-            <div layout="row" >
-                <md-input-container >
-                    <label>Nome Da Pessoa</label>
-                    <input ng-disabled="true" ng-model="vm.dataset.nome" type="text" name="nome" ng-required="true">        
-                </md-input-container >
-                <md-input-container >
-                  <label>Cidade</label>
-                  <input ng-disabled="true" ng-model="vm.dataset.cidade.nome" type="text" name="nome" ng-required="true">        
-              </md-input-container >
-            </div>
-            <div>
-              <md-input-container  class="data-picker-alinhado-esquerda">
-                <label >Data</label>
-                    <md-datepicker ng-disabled="true" ng-model="vm.dataset.data_nascimento"></md-datepicker>
-            </md-input-container> 
-            </div>
-            </div>   
-            <md-button type="submit" ng-click="vm.form.$valid && vm.excluiPessoa($ev)"> Excluir
-              <md-icon md-svg-src="assets/img/delete.svg"></md-icon>
-            </md-button> 
-            <md-button  ng-click= vm.cancelar()> Voltar
-              <md-icon md-svg-src="assets/img/back.svg"></md-icon>
-            </md-button>  
-        </md-content>  
+  <div>
+    <md-button ng-click=vm.cancelar()>
+      <md-icon md-svg-src="assets/img/back.svg"></md-icon> Voltar Lista de Pessoas
+    </md-button>
+  </div>
+  <div>
+    <label>Editar Pessoa</label>
+    <md-button ng-click=vm.editaPessoa(pessoa.id)>
+      <md-icon md-svg-src="assets/img/edit.svg"></md-icon> Editar Dados
+    </md-button>
+    <md-button ng-click="showTabDialog($event)">
+      <md-icon md-svg-src="assets/img/localization.svg"></md-icon> Alterar Cidade
+    </md-button>
+    <md-button ng-click=vm.cancelar()>
+      <md-icon md-svg-src="assets/img/prontuario.svg"></md-icon> Atualizar Prontuario
+    </md-button>
+  </div>
+  <md-content class="md-padding">
+    <div layout="row">
+      <md-input-container>
+        <label>Nome Da Pessoa</label>
+        <input ng-disabled="true" ng-model="vm.dataset.nome" type="text" name="nome" ng-required="true">
+      </md-input-container>
+      <md-input-container>
+        <label>Cidade</label>
+        <input ng-disabled="true" ng-model="vm.dataset.cidade.nome" type="text" name="nome" ng-required="true">
+      </md-input-container>
     </div>
+    <div>
+      <md-input-container class="data-picker-alinhado-esquerda">
+        <label>Data</label>
+        <md-datepicker ng-disabled="true" ng-model="vm.dataset.data_nascimento"></md-datepicker>
+      </md-input-container>
+    </div>
+    </div>
+    <md-button type="submit" ng-click="vm.form.$valid && vm.excluiPessoa($ev)"> Excluir
+      <md-icon md-svg-src="assets/img/delete.svg"></md-icon>
+    </md-button>
+  </md-content>
+  <div class="container">
+    <div class="col-md-12">
+      <table id="quadro">
+        <thead text-align="center center">
+          <tr>
+            <th ng-click="vm.ordenar('data')"> Data </th>
+            <th ng-click="vm.ordenar('situacao')"> Situacao </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="prontuario in vm.dsProntuario | filter: orderBy:vm.sortKey">
+            <td>{{prontuario.data_hora}}</td>
+            <td>{{prontuario.situacao}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div layout="row" layout-align="center">
+        <md-button ng-click="vm.retornar()" aria-label="sf">
+          <md-icon md-svg-src="assets/img/left-arrow.svg"></md-icon>
+        </md-button>
+        <br>
+        Página: {{vm.index}}
+        <md-button ng-click="vm.avancar()" aria-label="sf">
+          <md-icon md-svg-src="assets/img/rigth-arrow.svg"></md-icon>
+        </md-button>
+      </div>
+    </div>
+  </div>
 </form>

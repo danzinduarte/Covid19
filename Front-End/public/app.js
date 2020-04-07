@@ -9,7 +9,8 @@ var materialApp = angular
     'ngStorage',
     'app.quadro',
     'app.cidade',
-    'app.pessoa'
+    'app.pessoa',
+    'app.prontuario'
     
 
 ]).config(function($mdThemingProvider,$mdDateLocaleProvider,$mdAriaProvider,$httpProvider) {

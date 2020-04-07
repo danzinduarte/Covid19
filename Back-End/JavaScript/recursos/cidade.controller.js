@@ -47,7 +47,7 @@ function carregaPorId(req,res){
 	
 } 
 
-function salvaCidade(req,res){
+function salvaCidade(req,res){ 
     
     let cidade = req.body
 
@@ -79,34 +79,30 @@ function salvaCidade(req,res){
         })
     })
 }
-function excluiCidade(req,res)
+async function excluiCidade(req,res)
 {
 	
 	if (!req.params.id) {
 		return res.status(400).json({
 			sucesso: false,
 			msg: "Formato de entrada inválido."
-		});
+		})
+		
 	}
-	
-	if(req.params.id){
-		dataContext.Pessoa.findAll({
+	const pessoas = await dataContext.Pessoa.findAll({
 			where : {
 				cidade_id: {
 					[Op.eq] : req.params.id
 				}
 			}
 		})
-		.then(function(pessoasRetornadas) {				
-			res.status(404).json({
+		if(pessoas.length > 0){
+			return res.status(400).json({
 				sucesso: false,
-				msg: "A cidade está sendo usada!",
-				erro : pessoasRetornadas
+				msg: "Atenção não é possível excluir esta cidade pois existem pessoas associadas à mesma"
 			})
-		})
-	}
-	
-	
+		}
+			
 
 	
 	// Quando tu for trabalhar com apenas um model e que ele nao vai fazer outras insercoes em outras tabelas, 

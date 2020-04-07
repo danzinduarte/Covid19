@@ -8,7 +8,7 @@ angular.module('app.cidade')
             return ds.$get({coluna : coluna})
     };
 
-    cidadeFactory.getCidade = function(cidade, coluna) {
+    cidadeFactory.getCidades = function(cidade, coluna) {
         if(cidade.length < 3)
             cidade = null
        

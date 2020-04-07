@@ -1,4 +1,5 @@
 const dataContext = require('../dao/dao');
+const { Op } = require('sequelize');
 function carregaTudo(req,res) {
 	if (req.query) {
 		return dataContext.Pessoa.findAll({
@@ -38,7 +39,15 @@ function carregaTudo(req,res) {
 	})
 }
 
-function carregaPorId(req,res){
+async function carregaPorId(req,res){
+
+	if (!req.params.id) {
+		return res.status(400).json({
+			sucesso: false,
+			msg: "Formato de entrada inválido."
+		})
+	}
+	
 	return dataContext.Pessoa.findByPk(req.params.id,{
 		attributes: { exclude: ['cidade_id']},
 		include: [{

@@ -178,6 +178,7 @@ background: linear-gradient(90deg, rgba(224,180,73,1) 0%, rgba(210,200,166,1) 51
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
+    text-align: center;
   }
   
   #quadro td, #quadro th {
@@ -195,6 +196,7 @@ background: linear-gradient(90deg, rgba(224,180,73,1) 0%, rgba(210,200,166,1) 51
     text-align: left;
     background-color: rgb(133, 124, 124);
     color: white;
+    text-align: center;
   }
 
 

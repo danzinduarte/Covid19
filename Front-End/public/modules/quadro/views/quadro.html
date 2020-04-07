@@ -1,6 +1,8 @@
-
-    <div  >
-        <h3 layout-align="center center" class="md-title negrito">Quadro Geral</h3>
+    <div layout="row" >
+        <h3 layout-align="center center" class="md-title negrito" flex="60">Quadro Geral</h3>
+        <md-button ng-click= vm.cancelar()> Ir pra lista das Cidades
+            <md-icon md-svg-src="assets/img/back.svg"></md-icon>
+          </md-button>
     </div>
     <div class="container">
         <div class="col-md-12">
@@ -15,7 +17,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="quadro in vm.dataset | filter: orderBy:vm.sortKey">
+                    <tr ng-repeat="quadro in vm.dataset | filter: orderBy:vm.sortKey">   
                         <td>{{quadro.uf}}</td>
                         <td>{{quadro.caso_suspeito}}</td>
                         <td>{{quadro.caso_analise}}</td>
@@ -24,6 +26,41 @@
                     </tr>
                 </tbody>
             </table>
+            <div layout="row" layout-align=" center" ng-if="(vm.dataset | filter: vm.uf).length == 0">
+                <span class="notFound">Nenhum restaurante encontrado!</span>
+                <img ng-src="assets/img/not-found.svg"  class="img-404">
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="col-md-12">
+            <table id="quadro">
+                <thead>
+                    <tr>
+                        <th> Cidades</th>
+                        <th> UF </th>
+                        <th> Casos Suspeitos</th>
+                        <th > Casos em Análise</th>
+                        <th > Casos Confirmados</th>
+                        <th > Casos Descartados</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="quadro in vm.dataset | filter: orderBy:vm.sortKey">
+                        <td>{{quadro.cidades}}</td>
+                        <td>{{quadro.uf}}</td>
+                        <td>{{quadro.caso_suspeito}}</td>
+                        <td>{{quadro.caso_analise}}</td>
+                        <td>{{quadro.caso_confirmado}}</td>
+                        <td>{{quadro.caso_descartado}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div layout="row" layout-align=" center" ng-if="(vm.dataset | filter: vm.cidades).length == 0">
+                <span class="notFound">Nenhum restaurante encontrado!</span>
+                <img ng-src="assets/img/not-found.svg"  class="img-404">
+            </div>
                 
                 <div layout="row" layout-align="center">
                     <md-button ng-click="vm.retornar()" aria-label="sf">

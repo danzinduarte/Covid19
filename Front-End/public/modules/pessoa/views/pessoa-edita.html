@@ -1,35 +1,35 @@
 <form ng-cloak name="vm.form">
 
-                <label>Editar Pessoa</label>
+  <label>Editar Pessoa</label>
 
-        </div>
-        <md-content class="md-padding">
-            <div layout="row" >
-                <md-input-container flex="40" >
-                    <label>Nome Da Pessoa</label>
-                    <input ng-model="vm.dataset.nome" type="text" name="nome" ng-required="true">        
-                </md-input-container >
-                <md-input-container flex="30">
-                  <label>Cidade</label>
-                  <md-select ng-model="vm.dataset.cidade" ng-model-options="{ trackBy: 'cidade.nome' }"> >
-                    <md-option ng-repeat="cidades in vm.dsCidade" ng-value="cidades">
-                      {{cidades.nome}}
-                    </md-option>
-                  </md-select>
-                </md-input-container>
-            </div>
-            <div>
-                <md-input-container class="data-picker-alinhado-esquerda">
-                  <label>Data</label>
-                      <md-datepicker ng-model="vm.dataset.data_nascimento"></md-datepicker>
-              </md-input-container> 
-            </div>   
-            <md-button type="submit" ng-click="vm.form.$valid && vm.salvaPessoa()"  aria-label="Salvar Dados"> Salvar
-              <md-icon md-svg-src="assets/img/save.svg"></md-icon>
-          </md-button>  
-          <md-button ng-click= vm.cancelar()> Voltar
-            <md-icon md-svg-src="assets/img/back.svg"></md-icon>
-          </md-button>  
-        </md-content>  
+  </div>
+  <md-content class="md-padding">
+    <div layout="row">
+      <md-input-container flex="40">
+        <label>Nome Da Pessoa</label>
+        <input ng-model="vm.dataset.nome" type="text" name="nome" ng-required="true">
+      </md-input-container>
+      <md-input-container flex="30">
+        <label>Cidade</label>
+        <md-select ng-model="vm.dataset.cidade" ng-model-options="{ trackBy: '$value.id' }">
+          <md-option ng-repeat="cidade in vm.dsCidade" ng-value="cidade">
+            {{cidade.nome}}
+          </md-option>
+        </md-select>
+      </md-input-container>
     </div>
+    <div>
+      <md-input-container class="data-picker-alinhado-esquerda">
+        <label>Data</label>
+        <md-datepicker ng-model="vm.dataset.data_nascimento"></md-datepicker>
+      </md-input-container>
+    </div>
+    <md-button type="submit" ng-click="vm.form.$valid && vm.salvaPessoa()" aria-label="Salvar Dados"> Salvar
+      <md-icon md-svg-src="assets/img/save.svg"></md-icon>
+    </md-button>
+    <md-button ng-click=vm.cancelar()> Voltar
+      <md-icon md-svg-src="assets/img/back.svg"></md-icon>
+    </md-button>
+  </md-content>
+  </div>
 </form>

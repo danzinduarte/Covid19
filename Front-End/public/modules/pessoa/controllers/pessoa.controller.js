@@ -37,7 +37,7 @@ function PessoaController(PessoaService,$mdDialog, $state)
     }
     function nomeSituacao(dsPessoa){
         vm.dataset = dsPessoa.map(function(resp){
-
+            
             switch (resp.situacao) {
 				case 1:
 					resp.situacao = "Caso Suspeito";

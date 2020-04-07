@@ -7,6 +7,7 @@ angular.module('app.quadro')
         var ds = new api.quadro();
         return ds.$get({quadro : quadroId})
     }
+   
     return quadroFactory;
 
 });

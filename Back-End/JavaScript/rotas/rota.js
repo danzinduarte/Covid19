@@ -34,8 +34,7 @@ rota.put('/pessoa/:id', pessoaController.atualiza);
 rota.get('/prontuario', prontuarioController.carregaTudo);
 rota.get('/prontuario/:id', prontuarioController.carregaPorId);
 rota.post('/prontuario', prontuarioController.salva);
-rota.delete('/prontuario/:id', prontuarioController.exclui);
-rota.put('/prontuario/:id', prontuarioController.atualiza);
+
 
 //Quadro
 rota.get('/quadro', quadroController.carregaTudo);

@@ -44,6 +44,11 @@ angular.module('app.pessoa')
         var ds = new api.cidade();
         return ds.$get({ cidadeModel : nome})
     }
+
+    pessoaFactory.getProntuario = function (nome){
+        var ds = new api.prontuario();
+        return ds.$get({ prontuarioModel : nome})
+    }
    
     return pessoaFactory;
 
