@@ -50,8 +50,8 @@ module.exports.initRelations = function() {
 
     Prontuario.belongsTo(Pessoa, {
         foreignKey: 'pessoa_id',
-        onDelete: 'NO ACTION',
-        onUpdate: 'NO ACTION'
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
     });
 };
 

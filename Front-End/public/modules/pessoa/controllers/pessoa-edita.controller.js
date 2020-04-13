@@ -9,6 +9,7 @@ function PessoaEditaController(PessoaService, pessoaId, CidadeService, $mdDialog
     vm.cancelar             = cancelar;
     vm.carregaCidades       = carregaCidades;
     vm.cidadeService        = CidadeService;
+    vm.prontuario           = prontuario;
     
     
     function init(){
@@ -16,7 +17,7 @@ function PessoaEditaController(PessoaService, pessoaId, CidadeService, $mdDialog
         if (pessoaId) {
             PessoaService.getById(pessoaId).then(function(pessoaModel){
                 vm.dataset = pessoaModel.data
-                console.log(pessoaModel.data)
+                console.log(pessoaModel.datan)
             })
         }
         carregaCidades();
@@ -75,6 +76,9 @@ function PessoaEditaController(PessoaService, pessoaId, CidadeService, $mdDialog
     } 
     function cancelar() {
         $state.go('pessoa')
+    }
+    function prontuario() {
+        $state.go('pessoa-prontuario')
     }
     
 }

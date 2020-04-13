@@ -1,45 +1,44 @@
 const dataContext = require('../dao/dao');
 const { Op } = require('sequelize');
-function carregaTudo(req,res) {
+function carregaTudo(req, res) {
 	if (req.query) {
 		return dataContext.Pessoa.findAll({
-			attributes: { exclude: ['cidade_id']},
-			include : [
+			attributes: { exclude: ['cidade_id'] },
+			include: [
 				{
-					model : dataContext.Cidade
-					 
+					model: dataContext.Cidade
+
 				}
 			]
 		})
-		.then(function(pessoasFiltrados) {			
-			res.status(200).json({
-				sucesso:true,
-				data: pessoasFiltrados
+			.then(function (pessoasFiltrados) {
+				res.status(200).json({
+					sucesso: true,
+					data: pessoasFiltrados
+				})
 			})
-		})
-		
 	}
 	return dataContext.Pessoa.findAll({
-	}).then(function(pessoas){
-		pessoas = pessoas.map(function(pessoasRetornados){
-			pessoasRetornados = pessoasRetornados.get({ plain : true})
-			
+	}).then(function (pessoas) {
+		pessoas = pessoas.map(function (pessoasRetornados) {
+			pessoasRetornados = pessoasRetornados.get({ plain: true })
+
 			return pessoasRetornados
 		})
-    	return res.status(200).json({
-        	sucesso : true,
-            data : pessoas
-        })
-    }).catch(function(err){
-		return res.status(404).json({ 	
+		return res.status(200).json({
+			sucesso: true,
+			data: pessoas
+		})
+	}).catch(function (err) {
+		return res.status(404).json({
 			sucesso: false,
-			data : [],
-			erros : err
+			data: [],
+			erros: err
 		});
 	})
 }
 
-async function carregaPorId(req,res){
+async function carregaPorId(req, res) {
 
 	if (!req.params.id) {
 		return res.status(400).json({
@@ -47,60 +46,72 @@ async function carregaPorId(req,res){
 			msg: "Formato de entrada inválido."
 		})
 	}
-	
-	return dataContext.Pessoa.findByPk(req.params.id,{
-		attributes: { exclude: ['cidade_id']},
+
+	return dataContext.Pessoa.findByPk(req.params.id, {
+		attributes: { exclude: ['cidade_id'] },
 		include: [{
 			model: dataContext.Cidade
 		}]
 	})
-	.then(function(pessoa){
-		if (!pessoa){
-			res.status(404).json({
-				sucesso: false,
-				msg: "Cidade não encontrada."
+		.then(function (pessoa) {
+			if (!pessoa) {
+				res.status(404).json({
+					sucesso: false,
+					msg: "Cidade não encontrada."
+				})
+				return;
+			}
+			pessoa = pessoa.get({ plain: true })
+			res.status(200).json({
+				sucesso: true,
+				data: pessoa
 			})
-			return;
-		}
-		pessoa = pessoa.get({plain : true})
-        res.status(200).json({
-			sucesso: true,
-			data: pessoa
 		})
-    })
 }
 
-function salvaPessoa(req,res){
+async function salvaPessoa(req, res) {
 	let pessoa = req.body
-	
-	if (!pessoa){
+	prontuario = {
+		situacao : pessoa.prontuario.situacao,
+		data_hora : pessoa.prontuario.data_hora,
+		pessoa_id : pessoa.prontuario.pessoa_id
+	}
+
+	if (!pessoa) {
 		return res.status(400).json({
-			sucesso: false, 
+			sucesso: false,
 			msg: "Formato de entrada inválido."
 		})
-		
+
 	}
+	dataContext.conexao.transaction(function(t){
+		let dadosProntuarioCriado
+		return dataContext.Prontuario.create(prontuario,{transaction : t})
+		.then(function(prontuarioCriado){
+			dadosProntuarioCriado = prontuarioCriado
+		})
+	})
 	pessoa.situacao = 1
 	dataContext.Pessoa.create(pessoa)
-	.then(function(novaPessoa){
-		return res.status(201).json({
-			successo : true,
-			data : novaPessoa,
-			msg : 'Pessoa criada com sucesso'
+		.then(function (novaPessoa) {
+			return res.status(201).json({
+				successo: true,
+				data: novaPessoa,
+				msg: 'Pessoa criada com sucesso'
+			})
 		})
-	})
-	.catch((err) => {
-		return res.status(400).json({
-			successo : false,
-			msg : 'Falha ao incluir a pessoa',
-			erros : err
+		.catch((err) => {
+			return res.status(400).json({
+				successo: false,
+				msg: 'Falha ao incluir a pessoa',
+				erros: err
+			})
 		})
-	})
 }
 
 
-function excluiPessoa(req,res){
-	if (!req.params.id){
+function excluiPessoa(req, res) {
+	if (!req.params.id) {
 		return res.status(400).json({
 			sucesso: false,
 			msg: "Formato de entrada inválido."
@@ -108,41 +119,41 @@ function excluiPessoa(req,res){
 	}
 
 	dataContext.Pessoa.findByPk(req.params.id)
-	.then(function (pessoa){
-		if (!pessoa){
-			return res.status(404).json({
+		.then(function (pessoa) {
+			if (!pessoa) {
+				return res.status(404).json({
+					sucesso: false,
+					msg: "Pessoa não encontrado."
+				})
+			}
+			dataContext.Pessoa.destroy({ where: { id: req.params.id } })
+				.then(function (result) {
+					return res.status(200).json({
+						sucesso: true,
+						msg: "Pessoa excluida com sucesso!"
+					})
+				})
+		}).catch(function (error) {
+			return res.status(400).json({
 				sucesso: false,
-				msg: "Pessoa não encontrado."
-			})
-		}
-		dataContext.Pessoa.destroy({ where : { id : req.params.id }})
-		.then(function(result){
-			return res.status(200).json({
-				sucesso : true,
-				msg : "Pessoa excluida com sucesso!"
-			})
+				msg: "Falha ao excluir Pessoa",
+				erro: error
+			});
 		})
-	}).catch(function(error){
-		return res.status(400).json({
-			sucesso: false,
-			msg: "Falha ao excluir Pessoa",
-			erro: error
-		});
-	})
 }
 
-function atualizaPessoa(req,res){
+function atualizaPessoa(req, res) {
 
 	let pessoa = req.body
 
-	if(!pessoa){
+	if (!pessoa) {
 		return res.status(400).json({
 			sucesso: false,
 			msg: "Formato de entrada inválido"
 		})
 	}
 
-	if(!req.params.id){
+	if (!req.params.id) {
 		return res.status(400).json({
 			sucesso: false,
 			msg: "Um id deve ser informado!"
@@ -150,42 +161,42 @@ function atualizaPessoa(req,res){
 	}
 
 	dataContext.Pessoa.findByPk(req.params.id)
-	.then(function(pessoaBanco){
-		if(!pessoaBanco){
+		.then(function (pessoaBanco) {
+			if (!pessoaBanco) {
+				return res.status(404).json({
+					sucesso: false,
+					msg: "Pessoa não encontrada"
+				});
+			}
+			let updateFields = {
+				nome: pessoa.nome,
+				data_nascimento: pessoa.data_nascimento,
+				cidade_id: pessoa.cidade_id,
+				situacao: pessoa.situacao
+			}
+			pessoaBanco.update(updateFields)
+				.then(function (pessoaAtualizada) {
+					return res.status(200).json({
+						sucesso: true,
+						msg: "Pessoa Atualizada com Sucesso",
+						data: pessoaAtualizada
+					})
+				})
+		}).catch(function (error) {
 			return res.status(404).json({
 				sucesso: false,
-				msg: "Pessoa não encontrada"
-			});
-		}
-		let updateFields = {
-			nome : pessoa.nome,
-			data_nascimento 		: pessoa.data_nascimento,
-			cidade_id : pessoa.cidade_id,
-			situacao : pessoa.situacao
-		}
-		pessoaBanco.update(updateFields)
-		.then(function(pessoaAtualizada){
-			return res.status(200).json({
-				sucesso: true,
-				msg: "Pessoa Atualizada com Sucesso",
-				data: pessoaAtualizada
+				msg: "Falha ao Atualizar a Pessoa",
+				erro: error
 			})
 		})
-	}).catch(function(error){
-	return res.status(404).json({
-		sucesso: false,
-		msg: "Falha ao Atualizar a Pessoa",
-		erro : error
-		})
-	})
 }
 
-module.exports = 
+module.exports =
 {
 	//Quando for consumir irá pegar os nomes da primeira tabela
-    carregaTudo  	: carregaTudo,
-    carregaPorId 	: carregaPorId,
-    salva 			: salvaPessoa,
-    exclui 			: excluiPessoa,
-	atualiza 		: atualizaPessoa,  
+	carregaTudo: carregaTudo,
+	carregaPorId: carregaPorId,
+	salva: salvaPessoa,
+	exclui: excluiPessoa,
+	atualiza: atualizaPessoa,
 }

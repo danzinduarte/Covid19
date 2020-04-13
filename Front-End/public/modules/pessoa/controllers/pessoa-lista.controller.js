@@ -20,8 +20,7 @@ function PessoaListaController(PessoaService, pessoaId, CidadeService, Prontuari
 
         if (pessoaId) {
             PessoaService.getById(pessoaId).then(function(pessoaModel){
-                vm.dataset = pessoaModel.data  
-                console.log(pessoaModel.data)            
+                vm.dataset = pessoaModel.data       
             })
         }
         carregaCidades();
@@ -81,6 +80,7 @@ function PessoaListaController(PessoaService, pessoaId, CidadeService, Prontuari
         PessoaService.delete(pessoaId).then(sucesso,erro) 
     }
     function editaPessoa(pessoaId) {
+        pessoaId = vm.dataset
 		$state.go('pessoa-edita', {id : pessoaId})		
     }
     function nomeSituacao(dsProntuario){

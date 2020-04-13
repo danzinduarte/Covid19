@@ -35,7 +35,7 @@ function CidadeController(CidadeService, $mdDialog, $state, $scope) {
         $state.go('cidade-lista', { id: cidadeId })
     }
     function voltar() {
-        $state.go('home')
+        $state.go('quadro')
     }
 
 

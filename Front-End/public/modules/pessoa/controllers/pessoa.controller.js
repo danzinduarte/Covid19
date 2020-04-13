@@ -33,7 +33,7 @@ function PessoaController(PessoaService,$mdDialog, $state)
 		$state.go('pessoa-lista', {id : pessoaId})		
     }
     function voltar() {
-        $state.go('home')
+        $state.go('quadro')
     }
     function nomeSituacao(dsPessoa){
         vm.dataset = dsPessoa.map(function(resp){

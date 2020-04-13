@@ -1,11 +1,12 @@
 angular.module('app.quadro')
 .controller('QuadroController', QuadroController);
 
-function QuadroController(QuadroService)
+function QuadroController(QuadroService, $state)
 {
     vm = this;
     vm.carregaQuadros  = carregaQuadros;
-
+    vm.cidade          = cidade;
+    vm.pessoa          = pessoa;
     function init(){
         carregaQuadros()
     }
@@ -18,4 +19,12 @@ function QuadroController(QuadroService)
            
         })
     } 
+    function cidade() {
+        $state.go('cidade')
+    }
+
+    function pessoa() {
+        $state.go('pessoa')
+    }
+
 }

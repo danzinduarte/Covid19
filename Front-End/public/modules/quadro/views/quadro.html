@@ -1,7 +1,7 @@
     <div layout="row" >
         <h3 layout-align="center center" class="md-title negrito" flex="60">Quadro Geral</h3>
-        <md-button ng-click= vm.cancelar()> Ir pra lista das Cidades
-            <md-icon md-svg-src="assets/img/back.svg"></md-icon>
+        <md-button class="md-raised md-primary" ng-click= vm.cidade()> Ver Cidades
+            <md-icon md-svg-src="assets/img/cancel.svg"></md-icon>
           </md-button>
     </div>
     <div class="container">
@@ -33,6 +33,9 @@
         </div>
     </div>
     <br>
+    <md-button class="md-raised md-primary" flex="80" ng-click= vm.pessoa()> Ver Casos
+        <md-icon md-svg-src="assets/img/cancel.svg"></md-icon>
+      </md-button>
     <div class="container">
         <div class="col-md-12">
             <table id="quadro">
@@ -74,3 +77,4 @@
                 </div>
         </div>
     </div>
+    
