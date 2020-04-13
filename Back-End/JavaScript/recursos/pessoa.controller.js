@@ -70,12 +70,6 @@ async function carregaPorId(req, res) {
 }
 
 async function salvaPessoa(req, res) {
-	let pessoa = req.body
-	prontuario = {
-		situacao : pessoa.prontuario.situacao,
-		data_hora : pessoa.prontuario.data_hora,
-		pessoa_id : pessoa.prontuario.pessoa_id
-	}
 
 	if (!pessoa) {
 		return res.status(400).json({
@@ -84,13 +78,7 @@ async function salvaPessoa(req, res) {
 		})
 
 	}
-	dataContext.conexao.transaction(function(t){
-		let dadosProntuarioCriado
-		return dataContext.Prontuario.create(prontuario,{transaction : t})
-		.then(function(prontuarioCriado){
-			dadosProntuarioCriado = prontuarioCriado
-		})
-	})
+	
 	pessoa.situacao = 1
 	dataContext.Pessoa.create(pessoa)
 		.then(function (novaPessoa) {
@@ -99,6 +87,14 @@ async function salvaPessoa(req, res) {
 				data: novaPessoa,
 				msg: 'Pessoa criada com sucesso'
 			})
+		})
+		.then(function(novoProntuario){
+			dataContext.Prontuario.create(novoProntuario)
+				prontuario = {
+					pessoa_id = novaPessoa.id,
+					situacao = novaPessoa.situacao,
+					data_hora = Date.now()
+				}
 		})
 		.catch((err) => {
 			return res.status(400).json({

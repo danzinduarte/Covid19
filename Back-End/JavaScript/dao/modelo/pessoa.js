@@ -1,7 +1,7 @@
 
 'use strict';
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
     return sequelize.define('Pessoa', {
         id: {
             type: DataTypes.INTEGER,
@@ -10,13 +10,13 @@ module.exports = function(sequelize, DataTypes) {
             primaryKey: true,
             autoIncrement: true,
             comment: 'Chave primaria'
-        },        
+        },
         nome: {
             type: DataTypes.STRING(60),
             field: 'nome',
             allowNull: false,
             comment: 'Nome da Pessoa',
-            
+
         },
         data_nascimento: {
             type: DataTypes.DATE,
@@ -36,24 +36,24 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             comment: 'Situacao da Pessoa'
         }
-    }, 
-    {
-        schema: 'public',
-        tableName: 'Pessoa',
-        timestamps: false,
-        name:{
-            singular:'pessoa',
-            plural  :'pessoas'
-        }
-    });
+    },
+        {
+            schema: 'public',
+            tableName: 'Pessoa',
+            timestamps: false,
+            name: {
+                singular: 'pessoa',
+                plural: 'pessoas'
+            }
+        });
 };
 
-module.exports.initRelations = function() {
+module.exports.initRelations = function () {
     delete module.exports.initRelations;
-    var dataContext         = require('../dao');
-    var Pessoa              = dataContext.Pessoa;
-    var Cidade              = dataContext.Cidade;
- 
+    var dataContext = require('../dao');
+    var Pessoa = dataContext.Pessoa;
+    var Cidade = dataContext.Cidade;
+
 
     Pessoa.belongsTo(Cidade, {
         foreignKey: 'cidade_id',

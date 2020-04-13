@@ -1,45 +1,41 @@
 <form ng-cloak name="vm.form">
-    <div layout="column">
-        <div>
-            <div>
-              
-            </div>
-            <div layout = "row">
-              <div flex="80">
-                <label>Adicionar Cidade</label>
-              </div>
-            </div>
+  <div layout="column">
+    <div>
+      <div layout="row">
+        <div flex="80">
+          <label>Adicionar Cidade</label>
         </div>
-        <md-content class="md-padding">
-            <div layout="row" >
-                <md-input-container flex="40">
-                    <label>Nome Da Cidade</label>
-                    <input ng-model="vm.dataset.nome" type="text" name="nome" ng-required="true">   
-                    <div ng-messages="vm.form.nome.$error">
-                      <div ng-message="required">Por favor Insira o Nome de Uma Cidade</div>
-                    </div>          
-                </md-input-container >
-                <md-input-container md-no-float class="md-block" >
-                    <md-tooltip>UF ( Unidade da Federação) *</md-tooltip>
-                      <md-icon md-svg-src="assets/img/estado.svg" style="display:inline-block;"></md-icon>
-                        <label>UF ( Unidade da Federação) *</label>
-                          <md-select ng-model="vm.dataset.uf"  name="uf" ng-required="true">
-                            <md-option ng-repeat="estado in vm.estados" ng-value="estado.abbrev">
-                              {{estado.abbrev}}
-                            </md-option>
-                          </md-select>
-                          <div ng-messages="vm.form.uf.$error">
-                            <div ng-message="required">Por favor Insira um Estado</div>
-                          </div>     
-                  </md-input-container>
-            </div>   
-            <md-button type="submit" ng-click="vm.form.$valid && vm.salvaCidade()"  aria-label="Salvar Dados"> Salvar
-                <md-icon md-svg-src="assets/img/save.svg"></md-icon>
-            </md-button>  
-            <md-button  ng-click= vm.cancelar()> Voltar
-              <md-icon md-svg-src="assets/img/back.svg"></md-icon>
-            </md-button>
-        </md-content>  
-        
+      </div>
     </div>
+    <md-content class="md-padding">
+      <div layout="row">
+        <md-input-container flex="40">
+          <label>Nome Da Cidade</label>
+          <input ng-model="vm.dataset.nome" type="text" name="nome" ng-required="true">
+          <div ng-messages="vm.form.nome.$error">
+            <div ng-message="required">Por favor Insira o Nome de Uma Cidade</div>
+          </div>
+        </md-input-container>
+        <md-input-container md-no-float class="md-block">
+          <md-tooltip>UF ( Unidade da Federação) *</md-tooltip>
+          <md-icon md-svg-src="assets/img/estado.svg" style="display:inline-block;"></md-icon>
+          <label>UF ( Unidade da Federação) *</label>
+          <md-select ng-model="vm.dataset.uf" name="uf" ng-required="true">
+            <md-option ng-repeat="estado in vm.estados" ng-value="estado.abbrev">
+              {{estado.abbrev}}
+            </md-option>
+          </md-select>
+          <div ng-messages="vm.form.uf.$error">
+            <div ng-message="required">Por favor Insira um Estado</div>
+          </div>
+        </md-input-container>
+      </div>
+      <md-button type="submit" ng-click="vm.form.$valid && vm.salvaCidade()" aria-label="Salvar Dados"> Salvar
+        <md-icon md-svg-src="assets/img/save.svg"></md-icon>
+      </md-button>
+      <md-button ng-click=vm.cancelar()> Voltar
+        <md-icon md-svg-src="assets/img/back.svg"></md-icon>
+      </md-button>
+    </md-content>
+  </div>
 </form>

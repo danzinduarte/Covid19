@@ -1,62 +1,61 @@
 angular.module('app.pessoa')
-.controller('PessoaController', PessoaController);
+    .controller('PessoaController', PessoaController);
 
-function PessoaController(PessoaService,$mdDialog, $state)
-{
+function PessoaController(PessoaService, $mdDialog, $state) {
     vm = this;
-    vm.carregaPessoas  = carregaPessoas;
-    vm.novaPessoa      = novaPessoa;
-    vm.editaPessoa     = editaPessoa;
-    vm.voltar          = voltar;
-    vm.listaPessoa     = listaPessoa;
-   
+    vm.carregaPessoas = carregaPessoas;
+    vm.novaPessoa = novaPessoa;
+    vm.editaPessoa = editaPessoa;
+    vm.voltar = voltar;
+    vm.listaPessoa = listaPessoa;
 
 
-    function init(){
+
+    function init() {
         carregaPessoas()
     }
-    init ()      
-     
-    function carregaPessoas(){
-        PessoaService.getAll().then(function(pessoa){
+    init()
+
+    function carregaPessoas() {
+        PessoaService.getAll().then(function (pessoa) {
             vm.dataset = pessoa.data
             nomeSituacao(pessoa.data)
         })
-    } 
-    function novaPessoa(){
-		$state.go('pessoa-novo')	
+    }
+    function novaPessoa() {
+        $state.go('pessoa-novo')
     }
     function editaPessoa(pessoaId) {
-		$state.go('pessoa-edita', {id : pessoaId})		
+        $state.go('pessoa-edita', { id: pessoaId })
     }
     function listaPessoa(pessoaId) {
-		$state.go('pessoa-lista', {id : pessoaId})		
+        $state.go('pessoa-lista', { id: pessoaId })
     }
     function voltar() {
         $state.go('quadro')
     }
-    function nomeSituacao(dsPessoa){
-        vm.dataset = dsPessoa.map(function(resp){
-            
+    function nomeSituacao(dsPessoa) {
+        vm.dataset = dsPessoa.map(function (resp) {
+
             switch (resp.situacao) {
-				case 1:
-					resp.situacao = "Caso Suspeito";
-					
-					break;
-				case 2:
-					resp.situacao = "Caso em Analise"
-					
-					break;    
-				case 3:
-					resp.situacao = "Caso Confirmado"
-					break;
-				case 4:
-					resp.situacao = "Caso Descartado"
-					break;     
-				default:
-					break;
-			}
-			return resp
+                case 1:
+                    resp.situacao = "Caso Suspeito";
+
+                    break;
+                case 2:
+                    resp.situacao = "Caso em Analise"
+
+                    break;
+                case 3:
+                    resp.situacao = "Caso Confirmado"
+                    break;
+                case 4:
+                    resp.situacao = "Caso Descartado"
+                    break;
+                default:
+                    break;
+            }
+            return resp
         })
     }
 }

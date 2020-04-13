@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
     return sequelize.define('Quadro', {
         uf: {
             type: DataTypes.STRING(2),
@@ -33,20 +33,20 @@ module.exports = function(sequelize, DataTypes) {
             field: 'caso_descartado',
             allowNull: false,
             comment: 'Caso de Corona Virus Descartado'
-        } 
-    }, 
-    {
-        schema: 'public',
-        tableName: 'Quadro',
-        timestamps: false,
-        name:{
-            singular:'quadro',
-            plural  :'quadro'
         }
-    });
+    },
+        {
+            schema: 'public',
+            tableName: 'Quadro',
+            timestamps: false,
+            name: {
+                singular: 'quadro',
+                plural: 'quadro'
+            }
+        });
 };
 
-module.exports.initRelations = function() {
-    delete module.exports.initRelations; 
+module.exports.initRelations = function () {
+    delete module.exports.initRelations;
 };
 

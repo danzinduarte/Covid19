@@ -2,13 +2,13 @@ angular.module('app.cidade')
     .controller('CidadeEditaController', CidadeEditaController);
 
 function CidadeEditaController(CidadeService, cidadeId, $state, $mdDialog) {
-    vm                  = this;
-    vm.dataset          = {}
-    vm.salvaCidade      = salvaCidade;
-    vm.cancelar         = cancelar;
-    vm.excluiCidade     = excluiCidade;
-    vm.excluir          = excluir;
-    vm.estados          = ('AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO').split(' ').map(function (estado) { return { abbrev: estado }; });
+    vm = this;
+    vm.dataset = {}
+    vm.salvaCidade = salvaCidade;
+    vm.cancelar = cancelar;
+    vm.excluiCidade = excluiCidade;
+    vm.excluir = excluir;
+    vm.estados = ('AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO').split(' ').map(function (estado) { return { abbrev: estado }; });
     function init() {
 
         if (cidadeId) {
@@ -28,8 +28,8 @@ function CidadeEditaController(CidadeService, cidadeId, $state, $mdDialog) {
 
         var cidadeModel = {},
             cidade = {
-                nome        : vm.dataset.nome,
-                uf          : vm.dataset.uf
+                nome: vm.dataset.nome,
+                uf: vm.dataset.uf
             }
 
         cidadeModel = cidade;

@@ -1,7 +1,7 @@
 
 'use strict';
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
     return sequelize.define('Prontuario', {
         id: {
             type: DataTypes.INTEGER,
@@ -29,24 +29,24 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             comment: 'Hora do Atendimento'
         }
-    }, 
-    {
-        schema: 'public',
-        tableName: 'Prontuario',
-        timestamps: false,
-        name:{
-            singular:'prontuario',
-            plural  :'prontuarios'
-        }
-    });
+    },
+        {
+            schema: 'public',
+            tableName: 'Prontuario',
+            timestamps: false,
+            name: {
+                singular: 'prontuario',
+                plural: 'prontuarios'
+            }
+        });
 };
 
-module.exports.initRelations = function() {
+module.exports.initRelations = function () {
     delete module.exports.initRelations;
-    var dataContext         = require('../dao');
-    var Prontuario          = dataContext.Prontuario;
-    var Pessoa              = dataContext.Pessoa;
-   
+    var dataContext = require('../dao');
+    var Prontuario = dataContext.Prontuario;
+    var Pessoa = dataContext.Pessoa;
+
 
     Prontuario.belongsTo(Pessoa, {
         foreignKey: 'pessoa_id',

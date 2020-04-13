@@ -1,13 +1,13 @@
 angular.module('app.quadro')
-.factory('QuadroService', function(api) {
-    
-    var quadroFactory = {};
+    .factory('QuadroService', function (api) {
 
-    quadroFactory.getAll = function (quadroId){
-        var ds = new api.quadro();
-        return ds.$get({quadro : quadroId})
-    }
-   
-    return quadroFactory;
+        var quadroFactory = {};
 
-});
+        quadroFactory.getAll = function (quadroId) {
+            var ds = new api.quadro();
+            return ds.$get({ quadro: quadroId })
+        }
+
+        return quadroFactory;
+
+    });
