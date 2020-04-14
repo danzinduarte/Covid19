@@ -8,15 +8,14 @@
     function config($stateProvider) {
         // State
         $stateProvider
-            .state('prontuario', {
-                url: '/prontuario',
-                templateUrl: './modules/prontuario/views/prontuario.html',
-                controller: 'ProntuarioController',
-                controllerAs: 'vm',
-                params: {
-                    title: "Lista de Prontuarios",
-
-                }
-            })
+        .state('prontuario', {
+            url: '/prontuario',
+            templateUrl: '/modules/pessoa/views/prontuario.html',
+            controller: 'ProntuarioController',
+            controllerAs: 'vm',
+            params: {
+                title: "Prontuario Pessoa",
+            }
+        })
     }
 })()

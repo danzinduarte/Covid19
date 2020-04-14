@@ -13,6 +13,7 @@ function PessoaListaController(PessoaService, pessoaId, CidadeService, Prontuari
     vm.excluir = excluir;
     vm.editaPessoa = editaPessoa;
     vm.nomeSituacao = nomeSituacao;
+    vm.prontuario = prontuario;
 
 
     function init() {
@@ -47,6 +48,9 @@ function PessoaListaController(PessoaService, pessoaId, CidadeService, Prontuari
 
     function cancelar() {
         $state.go('pessoa')
+    }
+    function prontuario() {
+        $state.go('prontuario')
     }
     function excluiPessoa(ev) {
 

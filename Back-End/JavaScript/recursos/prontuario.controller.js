@@ -53,6 +53,13 @@ function salvaProntuario(req, res) {
 
 	let prontuario = req.body
 
+	if (!prontuario.pessoa_id) {
+		return res.status(404).json({
+			sucesso: false,
+			msg: "Falha ao atualizar prontuario, a pessoa não existe",
+		})
+	}
+	
 	if (!prontuario) {
 		return res.status(404).json({
 			sucesso: false,

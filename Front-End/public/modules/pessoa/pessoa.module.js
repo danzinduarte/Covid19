@@ -61,19 +61,6 @@
                     }
                 }
             })
-            .state('pessoa-prontuario', {
-                url: '/pessoa-prontuario/:id',
-                templateUrl: '/modules/pessoa/views/pessoa-prontuario.html',
-                controller: 'PessoaEditaController',
-                controllerAs: 'vm',
-                params: {
-                    title: "Prontuario Pessoa",
-                },
-                resolve: {
-                    pessoaId: function ($stateParams) {
-                        return $stateParams.id;
-                    }
-                }
-            })
+           
     }
 })()

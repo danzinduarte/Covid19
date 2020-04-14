@@ -70,7 +70,8 @@ async function carregaPorId(req, res) {
 }
 
 async function salvaPessoa(req, res) {
-
+	let pessoa = req.body
+	
 	if (!pessoa) {
 		return res.status(400).json({
 			sucesso: false,
@@ -87,14 +88,7 @@ async function salvaPessoa(req, res) {
 				data: novaPessoa,
 				msg: 'Pessoa criada com sucesso'
 			})
-		})
-		.then(function(novoProntuario){
-			dataContext.Prontuario.create(novoProntuario)
-				prontuario = {
-					pessoa_id = novaPessoa.id,
-					situacao = novaPessoa.situacao,
-					data_hora = Date.now()
-				}
+			
 		})
 		.catch((err) => {
 			return res.status(400).json({
@@ -103,6 +97,7 @@ async function salvaPessoa(req, res) {
 				erros: err
 			})
 		})
+		
 }
 
 

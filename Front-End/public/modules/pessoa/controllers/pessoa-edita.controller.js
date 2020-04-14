@@ -16,7 +16,6 @@ function PessoaEditaController(PessoaService, pessoaId, CidadeService, $mdDialog
         if (pessoaId) {
             PessoaService.getById(pessoaId).then(function (pessoaModel) {
                 vm.dataset = pessoaModel.data
-                console.log(pessoaModel.datan)
             })
         }
         carregaCidades();
