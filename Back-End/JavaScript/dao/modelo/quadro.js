@@ -11,25 +11,25 @@ module.exports = function (sequelize, DataTypes) {
             comment: 'Chave primaria'
         },
         caso_suspeito: {
-            type: DataTypes.STRING(2),
+            type: DataTypes.INTEGER,
             field: 'caso_suspeito',
             allowNull: false,
             comment: 'Caso de Corona Virus Suspeito'
         },
         caso_analise: {
-            type: DataTypes.STRING(2),
+            type: DataTypes.INTEGER,
             field: 'caso_analise',
             allowNull: false,
             comment: 'Caso de Corona Virus em Analise'
         },
         caso_confirmado: {
-            type: DataTypes.STRING(2),
+            type: DataTypes.INTEGER,
             field: 'caso_confirmado',
             allowNull: false,
             comment: 'Caso de Corona Virus Confirmado'
         },
         caso_descartado: {
-            type: DataTypes.STRING(2),
+            type: DataTypes.INTEGER,
             field: 'caso_descartado',
             allowNull: false,
             comment: 'Caso de Corona Virus Descartado'

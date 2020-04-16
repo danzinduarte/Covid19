@@ -1,20 +1,54 @@
 const dataContext = require('../dao/dao');
 const { Op } = require('sequelize');
-
+const sequelize =  require('../dao/dao');
 
 async function carregaTudo(req, res) {
 
 	const geral = await dataContext.Quadro.findAll({
-		limit: 10,
+	
 		order: [
 			['uf', 'DESC']
 		]
+	}).then(function (quadro) {
+		return res.status(200).json({
+			successo: true,
+			data: quadro,
+		})
+		
 	})
+	.catch((err) => {
+		return res.status(400).json({
+			successo: false,
+			msg: 'Falha ao exibir os quadros',
+			erros: err
+		})
+	})
+	
+}
 
-	const cidade = await sequelize.query("select cidade_id, count(distinct case when situacao = 1 then pessoa.id end ) as caso_suspeito, count(distinct case when situacao = 2 then pessoa.id end ) as analise, count(distinct case when situacao = '3' then pessoa.id end) as confirmado, count(distinct case when situacao = 4 then pessoa.id end ) as descartado, cidade.nome, cidade.uf  from pessoa inner join cidade on pessoa.cidade_id = cidade.id group by cidade_id")
-	return {
-		geral, cidade
-	}
+
+async function carregaCidades(req, res) {
+
+	const cidades = await dataContext.Cidade.findAll({
+		attributes: [[sequelize.fn('COUNT', sequelize.col('hats')), 'no_hats']],
+		order: [
+			['uf']
+		]
+	}).then(function (quadro) {
+		return res.status(200).json({
+			successo: true,
+			data: quadro,
+		})
+		
+	})
+	.catch((err) => {
+		return res.status(400).json({
+			successo: false,
+			msg: 'Falha ao exibir os quadros',
+			erros: err
+		})
+	})
+	
 }
 
 
@@ -153,7 +187,8 @@ function atualizaQuadro(req, res) {
 		}).catch(function (error) {
 			return res.status(400).json({
 				sucesso: false,
-				msg: "Falha ao atualizar o Quadro"
+				msg: "Falha ao atualizar o Quadro",
+				erro : error
 			});
 		})
 }
@@ -162,6 +197,7 @@ module.exports =
 {
 	//Quando for consumir irá pegar os nomes da primeira tabela
 	carregaTudo: carregaTudo,
+	carregaCidades: carregaCidades,
 	carregaPorId: carregaPorId,
 	salvaQuadro: salvaQuadro,
 	excluiQuadro: excluiQuadro,

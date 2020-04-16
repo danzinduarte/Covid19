@@ -46,11 +46,11 @@ function carregaPorId(req, res) {
 
 }
 
-function salvaCidade(req, res) {
+async function salvaCidade(req, res) {
 
-	let cidade = req.body
+	let payload = req.body
 
-	if (!cidade) {
+	if (!payload) {
 		return res.status(404).json({
 			sucesso: false,
 			msg: "Formato de entrada inválido.",
@@ -58,25 +58,35 @@ function salvaCidade(req, res) {
 	}
 
 	//Criar um novo objeto Visita no banco de dados com os dados passados pelo formulário
-	dataContext.Cidade.create(cidade)
-
-		//Cria uma promise que retorna o JSON
-		.then(function (novaCidade) {
-			res.status(201).json({
-				sucesso: true,
-				data: novaCidade,
-				msg: "Cidade criado com sucesso"
-			})
-		})
-
-		//Caso haja uma exceção
-		.catch(function (err) {
-			res.status(404).json({
+	const cidade = await dataContext.Cidade.create(payload);
+	if (cidade) {
+		const ufBanco = await dataContext.Quadro.findByPk(cidade.uf);
+		if (!ufBanco) {
+			const ufNovo = {
+				uf: cidade.uf,
+				caso_suspeito: 0,
+				caso_analise: 0,
+				caso_descartado: 0,
+				caso_confirmado: 0
+			}
+			const uf = await dataContext.Quadro.create(ufNovo);
+			if (uf) {
+				return res.status(201).json({
+					sucesso: true,
+					data: cidade,
+					msg: "Cidade Criada com Sucesso"
+				})
+			}
+			return res.status(400).json({
 				sucesso: false,
-				msg: "Falha ao incluir o Cidade",
-				erros: err
+				msg: "Erro ao criar a uf no Quadro"
 			})
-		})
+		}
+	}
+	return res.status(400).json({
+		sucesso: false,
+		msg: "Erro ao criar a Cidade"
+	})
 }
 async function excluiCidade(req, res) {
 
@@ -133,11 +143,11 @@ async function excluiCidade(req, res) {
 		})
 }
 
-function atualizaCidade(req, res) {
+async function atualizaCidade(req, res) {
 
 	//No front devo retornar um objeto restaurante com os dados
-	let cidade = req.body
-	if (!cidade) {
+	let payload = req.body
+	if (!payload) {
 		return res.status(400).json({
 			sucesso: false,
 			msg: "Formato de entrada inválido."
@@ -149,42 +159,97 @@ function atualizaCidade(req, res) {
 			msg: "Um id deve ser informado!"
 		})
 	}
-	dataContext.Cidade.findByPk(req.params.id)
-		.then(function (cidadeBanco) {
-			if (!cidadeBanco) {
-				return res.status(404).json({
-					sucesso: false,
-					msg: "Cidade não encontrada."
-				});
+	 
+	const cidade = await dataContext.Cidade.findByPk(req.params.id)
+	if (cidade) {
+		const pessoas = await dataContext.Pessoa.findAll({
+			where: {
+				cidade_id: {
+					[Op.eq]: cidade.id
+				}
 			}
-			// Campos da restaurante que serão alterados
-			let updateFields = {
-				nome: cidade.nome,
-				uf: cidade.uf
-			}
-			// Atualiza somente os campos restaurante
-			cidadeBanco.update(updateFields)
-				.then(function (cidadeAtualizada) {
-					return res.status(200).json({
-						sucesso: true,
-						msg: "Registro atualizado com sucesso",
-						data: cidadeAtualizada
-					})
-				})
-		}).catch(function (error) {
-			return res.status(400).json({
-				sucesso: false,
-				msg: "Falha ao atualizar a cidade"
-			});
 		})
+
+		if(pessoas.length > 0){
+			if(cidade.uf != payload.uf){
+				const qtdCasoSuspeitos = pessoas.reduce((total,pessoa) =>
+				total +
+				(pessoa.situacao == 1 ? 1 : 0),
+				0);
+
+				const qtdCasoEmAnalise = pessoas.reduce((total,pessoa) =>
+				total +
+				(pessoa.situacao == 2 ? 1 : 0),
+				0);
+
+				const qtdCasoConfirmados = pessoas.reduce((total,pessoa) =>
+				total +
+				(pessoa.situacao == 3 ? 1 : 0),
+				0);
+
+				const qtdCasoDescartados = pessoas.reduce((total,pessoa) =>
+				total +
+				(pessoa.situacao == 4 ? 1 : 0),
+				0);
+
+
+				const ufQuadro = await dataContext.Quadro.findByPk(cidade.uf);
+				if(ufQuadro){
+					ufQuadro.caso_suspeito 	 -= qtdCasoSuspeitos;
+					ufQuadro.caso_analise 	 -= qtdCasoEmAnalise;
+					ufQuadro.caso_confirmado -= qtdCasoConfirmados;
+					ufQuadro.caso_descartado -= qtdCasoDescartados;
+
+					ufQuadro.save();
+				}
+
+				const ufQuadroNovo = await dataContext.Quadro.findByPk(payload.uf);
+				if(ufQuadroNovo){
+					ufQuadroNovo.caso_suspeito 	 += qtdCasoSuspeitos;
+					ufQuadroNovo.caso_analise 	 += qtdCasoEmAnalise;
+					ufQuadroNovo.caso_confirmado += qtdCasoConfirmados;
+					ufQuadroNovo.caso_descartado += qtdCasoDescartados;
+
+					ufQuadroNovo.save();
+				}else{
+					const ufNovo = {
+						uf: payload.uf,
+						caso_suspeito: qtdCasoSuspeitos,
+						caso_analise: qtdCasoEmAnalise,
+						caso_descartado: qtdCasoConfirmados,
+						caso_confirmado: qtdCasoDescartados
+					}
+
+					const uf = await dataContext.Quadro.Create(ufNovo)
+					if(!uf){
+						return res.status(400).json({
+							sucesso: false,
+							msg: "Não foi possivel criar uma uf pra essa cidade"
+						})
+					}
+				}
+			}		
+		}
+		
+
+		cidade.nome = payload.nome;
+		cidade.uf = payload.uf;
+
+		cidade.save();
+		return res.status(200).json({
+			sucesso : true,
+			data : cidade,
+			msg: "Cidade Atualizada com Sucesso."
+		})
+	}
 }
 
-module.exports =
-{
-	//Quando for consumir irá pegar os nomes da primeira tabela
-	carregaTudo: carregaTudo,
-	carregaPorId: carregaPorId,
-	salva: salvaCidade,
-	exclui: excluiCidade,
-	atualiza: atualizaCidade,
-}
+	module.exports =
+	{
+		//Quando for consumir irá pegar os nomes da primeira tabela
+		carregaTudo: carregaTudo,
+		carregaPorId: carregaPorId,
+		salva: salvaCidade,
+		exclui: excluiCidade,
+		atualiza: atualizaCidade,
+	}

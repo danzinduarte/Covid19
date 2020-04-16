@@ -49,44 +49,46 @@ async function carregaPorId(req, res) {
 	})
 }
 
-function salvaProntuario(req, res) {
+async function salvaProntuario(req, res) {
 
-	let prontuario = req.body
+	const payload = req.body
 
-	if (!prontuario.pessoa_id) {
+	if (!payload.pessoa_id) {
 		return res.status(404).json({
 			sucesso: false,
 			msg: "Falha ao atualizar prontuario, a pessoa não existe",
 		})
 	}
 	
-	if (!prontuario) {
+	if (!payload) {
 		return res.status(404).json({
 			sucesso: false,
 			msg: "Formato de entrada inválido.",
 		})
 	}
-	prontuario.data_hora = Date.now();
-	//Criar um novo objeto Visita no banco de dados com os dados passados pelo formulário
-	dataContext.Prontuario.create(prontuario)
+	const pessoa = await dataContext.Pessoa.findByPk(payload.pessoa_id)
+	if(pessoa){
+		payload.data_hora = Date.now();
+		const prontuario = await dataContext.Prontuario.create(payload)
+		if(prontuario){
+			pessoa.situacao = prontuario.situacao;
 
-		//Cria uma promise que retorna o JSON
-		.then(function (novaProntuario) {
-			res.status(201).json({
-				sucesso: true,
-				data: novaProntuario,
-				msg: "Prontuario criado com sucesso"
+			pessoa.save();
+			return res.status(201).json({
+				sucesso : true,
+				data : prontuario,
+				msg : "Prontuario Criado Com sucesso."
 			})
+		}
+		return res.status(400).json({
+			sucesso : false,
+			msg : "Prontuario não foi criado"
 		})
-
-		//Caso haja uma exceção
-		.catch(function (err) {
-			res.status(404).json({
-				sucesso: false,
-				msg: "Falha ao incluir o Prontuario",
-				erros: err
-			})
-		})
+	}
+	return res.status(404).json({
+		sucesso : false,
+		msg : "Pessoa não foi encontrada"
+	})
 }
 
 module.exports =
@@ -94,5 +96,5 @@ module.exports =
 	//Quando for consumir irá pegar os nomes da primeira tabela
 	carregaTudo: carregaTudo,
 	carregaPorId: carregaPorId,
-	salva: salvaProntuario,
+	salvaProntuario: salvaProntuario,
 }

@@ -1,6 +1,7 @@
 angular.module('app.pessoa')
     .controller('PessoaListaController', PessoaListaController);
 
+
 function PessoaListaController(PessoaService, pessoaId, CidadeService, ProntuarioService, $mdDialog, $state) {
     vm = this;
     vm.dataset = {}
@@ -14,6 +15,8 @@ function PessoaListaController(PessoaService, pessoaId, CidadeService, Prontuari
     vm.editaPessoa = editaPessoa;
     vm.nomeSituacao = nomeSituacao;
     vm.prontuario = prontuario;
+    vm.showTabDialog = showTabDialog;
+    
 
 
     function init() {
@@ -104,5 +107,31 @@ function PessoaListaController(PessoaService, pessoaId, CidadeService, Prontuari
             return resp
         })
     }
-
+    function showTabDialog($ev){
+       
+            $mdDialog.show({
+              controller: PessoaCidadeController,
+              templateUrl: '../views/pessoa-cidade.html',
+              //parent: angular.element(document.body),
+              targetEvent: $ev,
+              clickOutsideToClose:true,
+            })
+            .then(function(answer) {
+              console.log('Sucesso')
+            }, function() {
+        });
+    }
+    function PessoaCidadeController($scope, $mdDialog) {
+        $scope.hide = function() {
+          $mdDialog.hide();
+        };
+    
+        $scope.cancel = function() {
+          $mdDialog.cancel();
+        };
+    
+        $scope.answer = function(answer) {
+          $mdDialog.hide(answer);
+        };
+      }
 }

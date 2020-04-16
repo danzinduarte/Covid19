@@ -33,11 +33,12 @@ rota.put('/pessoa/:id', pessoaController.atualiza);
 //Prontuario
 rota.get('/prontuario', prontuarioController.carregaTudo);
 rota.get('/prontuario/:id', prontuarioController.carregaPorId);
-rota.post('/prontuario', prontuarioController.salva);
+rota.post('/prontuario', prontuarioController.salvaProntuario);
 
 
 //Quadro
 rota.get('/quadro', quadroController.carregaTudo);
-
+rota.get('/quadros', quadroController.carregaCidades);
+rota.post('/quadros', quadroController.salvaQuadro);
 //Torna todas as rotas públicas
 module.exports = rota;

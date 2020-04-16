@@ -70,34 +70,52 @@ async function carregaPorId(req, res) {
 }
 
 async function salvaPessoa(req, res) {
-	let pessoa = req.body
-	
-	if (!pessoa) {
+	const payload = req.body
+
+	if (!payload) {
 		return res.status(400).json({
 			sucesso: false,
 			msg: "Formato de entrada inválido."
 		})
 
 	}
-	
-	pessoa.situacao = 1
-	dataContext.Pessoa.create(pessoa)
-		.then(function (novaPessoa) {
-			return res.status(201).json({
-				successo: true,
-				data: novaPessoa,
-				msg: 'Pessoa criada com sucesso'
-			})
-			
-		})
-		.catch((err) => {
+
+	payload.situacao = 1;
+	const pessoa = await dataContext.Pessoa.create(payload);
+
+	if(pessoa){ 
+		const criarProntuario = {
+			pessoa_id : pessoa.id,
+			situacao  : pessoa.situacao,
+			data_hora : Date.now() 
+		}
+		const prontuario = await dataContext.Prontuario.create(criarProntuario)
+		if(!prontuario){
 			return res.status(400).json({
-				successo: false,
-				msg: 'Falha ao incluir a pessoa',
-				erros: err
+				sucesso : false,
+				msg: "Erro ao criar o Prontuario"
 			})
+		}
+
+		const cidade = await dataContext.Cidade.findByPk(pessoa.cidade_id);
+		const ufCidade = await dataContext.Quadro.findByPk(cidade.uf);
+		ufCidade.caso_suspeito += 1;
+
+		ufCidade.save();
+
+		return res.status(201).json({
+			successo: true,
+			data: pessoa,
+			msg: 'Pessoa criada com sucesso'
 		})
-		
+	}
+	return res.status(400).json({
+		sucesso : false,
+		msg: "Erro ao Criar Pessoa"
+	})
+	
+	
+	
 }
 
 
