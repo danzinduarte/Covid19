@@ -3,6 +3,9 @@ const { Op } = require('sequelize');
 function carregaTudo(req, res) {
 	if (req.query) {
 		return dataContext.Pessoa.findAll({
+			order: [
+				['id']
+			],
 			attributes: { exclude: ['cidade_id'] },
 			include: [
 				{
@@ -151,11 +154,11 @@ function excluiPessoa(req, res) {
 		})
 }
 
-function atualizaPessoa(req, res) {
+async function atualizaPessoa(req, res) {
 
-	let pessoa = req.body
+	let payload = req.body
 
-	if (!pessoa) {
+	if (!payload) {
 		return res.status(400).json({
 			sucesso: false,
 			msg: "Formato de entrada inválido"
@@ -169,35 +172,55 @@ function atualizaPessoa(req, res) {
 		})
 	}
 
-	dataContext.Pessoa.findByPk(req.params.id)
-		.then(function (pessoaBanco) {
-			if (!pessoaBanco) {
+	const pessoa = await dataContext.Pessoa.findByPk(req.params.id)
+		
+			if (!pessoa) {
 				return res.status(404).json({
 					sucesso: false,
 					msg: "Pessoa não encontrada"
 				});
 			}
-			let updateFields = {
-				nome: pessoa.nome,
-				data_nascimento: pessoa.data_nascimento,
-				cidade_id: pessoa.cidade_id,
-				situacao: pessoa.situacao
+
+			if(pessoa.cidade_id != payload.cidade_id){
+				const cidadePessoa = await dataContext.Cidade.findByPk(pessoa.cidade_id);
+				const cidadePayload = await dataContext.Cidade.findByPk(payload.cidade_id);
+
+				if(cidadePessoa.uf != cidadePayload.uf){
+					const pessoaUfQuadro = await dataContext.Quadro.findByPk(cidadePessoa.uf);
+					const payloadUfQuadro = await dataContext.Quadro.findByPk(cidadePayload.uf);
+
+					pessoaUfQuadro.caso_suspeito 	-= payload.situacao == 1 ? 1 : 0;
+					pessoaUfQuadro.caso_analise 	-= payload.situacao == 2 ? 1 : 0;
+					pessoaUfQuadro.caso_confirmado  -= payload.situacao == 3 ? 1 : 0;
+					pessoaUfQuadro.caso_descartado  -= payload.situacao == 4 ? 1 : 0;
+
+
+					payloadUfQuadro.caso_suspeito 	 += payload.situacao == 1 ? 1 : 0;
+					payloadUfQuadro.caso_analise 	 += payload.situacao == 2 ? 1 : 0;
+					payloadUfQuadro.caso_confirmado  += payload.situacao == 3 ? 1 : 0;
+					payloadUfQuadro.caso_descartado  += payload.situacao == 4 ? 1 : 0;
+
+					await pessoaUfQuadro.save();
+					await payloadUfQuadro.save();
+				}
+
 			}
-			pessoaBanco.update(updateFields)
-				.then(function (pessoaAtualizada) {
-					return res.status(200).json({
-						sucesso: true,
-						msg: "Pessoa Atualizada com Sucesso",
-						data: pessoaAtualizada
-					})
-				})
-		}).catch(function (error) {
-			return res.status(404).json({
-				sucesso: false,
-				msg: "Falha ao Atualizar a Pessoa",
-				erro: error
+
+
+
+			// não mexe
+			pessoa.nome				= payload.nome,
+			pessoa.data_nascimento  = payload.data_nascimento,
+			pessoa.cidade_id		= payload.cidade_id,
+			pessoa.situacao 		= payload.situacao
+
+			await pessoa.save()
+			return res.status(200).json({
+				sucesso : true,
+				data : pessoa,
+				msg: "Pessoa atualizada com êxito."
 			})
-		})
+			
 }
 
 module.exports =

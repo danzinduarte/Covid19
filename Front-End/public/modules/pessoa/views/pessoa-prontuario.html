@@ -1,0 +1,8 @@
+ <md-input-container flex="30">
+        <label>Cidade</label>
+        <md-select ng-model="vm.dataset.cidade" ng-model-options="{ trackBy: '$value.id' }">
+          <md-option ng-repeat="cidade in vm.dsCidade" ng-value="cidade">
+            {{cidade.nome}}
+          </md-option>
+        </md-select>
+      </md-input-container>

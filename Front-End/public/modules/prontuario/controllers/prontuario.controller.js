@@ -1,7 +1,7 @@
 angular.module('app.prontuario')
     .controller('ProntuarioController', ProntuarioController);
 
-function ProntuarioController(ProntuarioService, PessoaService, prontuarioId, $mdDialog, $state) {
+function ProntuarioController(ProntuarioService, PessoaService, pessoaId, $mdDialog, $state) {
     vm = this;
     vm.dataset = {}
     vm.salvaProntuario = salvaProntuario;
@@ -11,15 +11,8 @@ function ProntuarioController(ProntuarioService, PessoaService, prontuarioId, $m
 
 
     function init() {
-
-        if (prontuarioId) {
-            ProntuarioService.getById(prontuarioId).then(function (prontuarioModel) {
-                vm.dataset = prontuarioModel.data
-            })
-        }
-        carregaPessoas();
+        carregaProntuarios()
     }
-
     init()
 
     function salvaProntuario() {

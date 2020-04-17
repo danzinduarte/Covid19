@@ -1,8 +1,9 @@
 
 'use strict';
-
+// criando o model de cidade
 module.exports = function (sequelize, DataTypes) {
     return sequelize.define('Cidade', {
+        // criando a primary key id da cidade
         id: {
             type: DataTypes.INTEGER,
             field: 'id',
@@ -11,6 +12,7 @@ module.exports = function (sequelize, DataTypes) {
             autoIncrement: true,
             comment: 'Chave primaria'
         },
+        // criando a coluna nome da cidade
         nome: {
             type: DataTypes.STRING(60),
             field: 'nome',
@@ -18,6 +20,7 @@ module.exports = function (sequelize, DataTypes) {
             comment: 'Nome da Cidade',
 
         },
+         // criando a coluna uf da cidade
         uf: {
             type: DataTypes.STRING(2),
             field: 'uf',
@@ -25,6 +28,7 @@ module.exports = function (sequelize, DataTypes) {
             comment: 'UF da Cidade'
         }
     },
+     // instanciando a tabela no banco 
         {
             schema: 'public',
             tableName: 'Cidade',
@@ -35,7 +39,7 @@ module.exports = function (sequelize, DataTypes) {
             }
         });
 };
-
+// exportando a tabela
 module.exports.initRelations = function () {
     delete module.exports.initRelations;
 

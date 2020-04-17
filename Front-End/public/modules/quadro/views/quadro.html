@@ -17,12 +17,12 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="quadro in vm.dataset | filter: orderBy:vm.sortKey">
-                    <td>{{quadro.uf}}</td>
-                    <td>{{quadro.caso_suspeito}}</td>
-                    <td>{{quadro.caso_analise}}</td>
-                    <td>{{quadro.caso_confirmado}}</td>
-                    <td>{{quadro.caso_descartado}}</td>
+                <tr ng-repeat="uf in vm.dataset.ufs | filter: orderBy:vm.sortKey">
+                    <td>{{uf.uf}}</td>
+                    <td>{{uf.caso_suspeito}}</td>
+                    <td>{{uf.caso_analise}}</td>
+                    <td>{{uf.caso_confirmado}}</td>
+                    <td>{{uf.caso_descartado}}</td>
                 </tr>
             </tbody>
         </table>
@@ -50,13 +50,13 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="quadro in vm.dataset | filter: orderBy:vm.sortKey">
-                    <td>{{quadro.cidades}}</td>
-                    <td>{{quadro.uf}}</td>
-                    <td>{{quadro.caso_suspeito}}</td>
-                    <td>{{quadro.caso_analise}}</td>
-                    <td>{{quadro.caso_confirmado}}</td>
-                    <td>{{quadro.caso_descartado}}</td>
+                <tr ng-repeat="cidade in vm.dataset.cidades| filter: orderBy:vm.sortKey">
+                    <td>{{cidade.nome}}</td>
+                    <td>{{cidade.uf}}</td>
+                    <td>{{cidade.caso_suspeito}}</td>
+                    <td>{{cidade.caso_analise}}</td>
+                    <td>{{cidade.caso_confirmado}}</td>
+                    <td>{{cidade.caso_descartado}}</td>
                 </tr>
             </tbody>
         </table>

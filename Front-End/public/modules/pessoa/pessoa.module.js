@@ -61,6 +61,20 @@
                     }
                 }
             })
-           
+            .state('pessoa-prontuario', {
+                url: '/pessoa-prontuario/:id',
+                templateUrl: '/modules/pessoa/views/pessoa-prontuario.html',
+                controller: 'PessoaListaController',
+                controllerAs: 'vm',
+                params: {
+                    title: "Visualizar Pessoa",
+                },
+                resolve: {
+                    pessoaId: function ($stateParams) {
+                        return $stateParams.id;
+                    }
+                }
+            })
+
     }
 })()

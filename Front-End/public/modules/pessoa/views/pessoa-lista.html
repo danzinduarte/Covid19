@@ -13,7 +13,7 @@
       <md-button ng-click="vm.showTabDialog($ev)">
         <md-icon md-svg-src="assets/img/localization.svg"></md-icon> Alterar Cidade
       </md-button>
-      <md-button ng-click=vm.prontuario()>
+      <md-button ng-click=vm.prontuario(pessoaId)>
         <md-icon md-svg-src="assets/img/prontuario.svg"></md-icon> Atualizar Prontuario
       </md-button>
       <md-button type="submit" ng-click="vm.form.$valid && vm.excluiPessoa($ev)">

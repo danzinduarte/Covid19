@@ -4,26 +4,89 @@ const sequelize =  require('../dao/dao');
 
 async function carregaTudo(req, res) {
 
-	const geral = await dataContext.Quadro.findAll({
-	
+	const ufs = await dataContext.Quadro.findAll({
 		order: [
-			['uf', 'DESC']
+			['uf']
+		],
+		where: {
+			[Op.or]: [
+				{
+					caso_suspeito: { [Op.gt] : 0 }
+				},
+				{
+					caso_analise: { [Op.gt] : 0 }
+				},
+				{
+					caso_confirmado: { [Op.gt] : 0 }
+				},
+				{
+					caso_descartado: { [Op.gt] : 0 }
+				}
+			] 
+		}
+	});
+	const cidadesBanco = await dataContext.Cidade.findAll({
+		order: [
+			['uf']
 		]
-	}).then(function (quadro) {
-		return res.status(200).json({
-			successo: true,
-			data: quadro,
+	});
+
+	const cidades = [];
+
+	for (const cidade of cidadesBanco){
+		const pessoas = await dataContext.Pessoa.findAll({
+			where: {
+				cidade_id: {
+					[Op.eq]: cidade.id
+				}
+			}
+			
 		})
 		
-	})
-	.catch((err) => {
-		return res.status(400).json({
-			successo: false,
-			msg: 'Falha ao exibir os quadros',
-			erros: err
-		})
-	})
+		
+			const qtdCasoSuspeitos = pessoas.reduce((total,pessoa) =>
+			total +
+			(pessoa.situacao == 1 ? 1 : 0),
+			0);
 	
+			const qtdCasoEmAnalise = pessoas.reduce((total,pessoa) =>
+			total +
+			(pessoa.situacao == 2 ? 1 : 0),
+			0);
+	
+			const qtdCasoConfirmados = pessoas.reduce((total,pessoa) =>
+			total +
+			(pessoa.situacao == 3 ? 1 : 0),
+			0);
+	
+			const qtdCasoDescartados = pessoas.reduce((total,pessoa) =>
+			total +
+			(pessoa.situacao == 4 ? 1 : 0),
+			0);
+
+			cidade.dataValues.caso_suspeito 	= qtdCasoSuspeitos;
+			cidade.dataValues.caso_analise 		= qtdCasoEmAnalise;
+			cidade.dataValues.caso_confirmado   = qtdCasoConfirmados;
+			cidade.dataValues.caso_descartado   = qtdCasoDescartados;
+
+			if(cidade.dataValues.caso_suspeito > 0 || 
+			 cidade.dataValues.caso_analise > 0 || 
+			 cidade.dataValues.caso_confirmado > 0 || 
+			 cidade.dataValues.caso_descartado > 0 ){
+				cidades.push(cidade);
+			 }
+		
+		
+		
+	}
+	
+	return res.status(200).json({
+		successo: true,
+		data: {ufs, cidades}
+	});
+
+	
+
 }
 
 

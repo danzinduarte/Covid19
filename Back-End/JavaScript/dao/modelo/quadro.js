@@ -1,7 +1,8 @@
 'use strict';
-
+// criando o model do quadro
 module.exports = function (sequelize, DataTypes) {
     return sequelize.define('Quadro', {
+        // criando a primary key uf do quadro
         uf: {
             type: DataTypes.STRING(2),
             field: 'uf',
