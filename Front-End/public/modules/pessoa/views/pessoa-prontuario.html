@@ -1,8 +1,14 @@
- <md-input-container flex="30">
-        <label>Cidade</label>
-        <md-select ng-model="vm.dataset.cidade" ng-model-options="{ trackBy: '$value.id' }">
-          <md-option ng-repeat="cidade in vm.dsCidade" ng-value="cidade">
-            {{cidade.nome}}
-          </md-option>
-        </md-select>
-      </md-input-container>
+&lt;md-dialog aria-label="List dialog"&gt; 
+         &lt;md-dialog-content&gt;
+           &lt;md-list&gt;
+             &lt;md-list-item ng-repeat="item in items"&gt;
+              &lt;p&gt;Number {{item}}&lt;/p&gt; 
+             &lt;/md-item&gt;
+           &lt;/md-list&gt;
+         &lt;/md-dialog-content&gt; 
+         &lt;md-dialog-actions&gt; 
+           &lt;md-button ng-click="closeDialog()" class="md-primary"&gt; 
+             Close Dialog 
+           &lt;/md-button&gt; 
+         &lt;/md-dialog-actions&gt; 
+       &lt;/md-dialog&gt;

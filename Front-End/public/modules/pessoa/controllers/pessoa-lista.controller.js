@@ -24,7 +24,6 @@ function PessoaListaController(PessoaService, pessoaId, CidadeService, Prontuari
         if (pessoaId) {
             PessoaService.getById(pessoaId).then(function (pessoaModel) {
                 vm.dataset = pessoaModel.data
-                console.log(vm.dataset.id)
             })
         }
         carregaCidades();
@@ -107,31 +106,24 @@ function PessoaListaController(PessoaService, pessoaId, CidadeService, Prontuari
             return resp
         })
     }
-    function showTabDialog($ev){
-       
-            $mdDialog.show({
-              controller: PessoaCidadeController,
-              templateUrl: '../views/pessoa-cidade.html',
-              //parent: angular.element(document.body),
-              targetEvent: $ev,
-              clickOutsideToClose:true,
+    function showTabDialog(ev){
+        $mdDialog.show({
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            templateUrl: "pessoa-prontuario.html",
+            controller: ['$scope', '$mdDialog', function ViewTimContentCtrl ($scope, $mdDialog) {
+                $scope.hide = function () {
+                    $mdDialog.hide();
+                };
+                $scope.cancel = function () {
+                    $mdDialog.cancel();
+                };
+            }],
             })
             .then(function(answer) {
-              console.log('Sucesso')
+      
+                console.log('Sucesso')
             }, function() {
         });
     }
-    function PessoaCidadeController($scope, $mdDialog) {
-        $scope.hide = function() {
-          $mdDialog.hide();
-        };
-    
-        $scope.cancel = function() {
-          $mdDialog.cancel();
-        };
-    
-        $scope.answer = function(answer) {
-          $mdDialog.hide(answer);
-        };
-      }
 }

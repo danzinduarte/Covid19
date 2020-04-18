@@ -71,9 +71,29 @@ async function salvaProntuario(req, res) {
 		payload.data_hora = Date.now();
 		const prontuario = await dataContext.Prontuario.create(payload)
 		if(prontuario){
-			pessoa.situacao = prontuario.situacao;
 
-			pessoa.save();
+			const cidade = await dataContext.Cidade.findByPk(pessoa.cidade_id)
+			
+			const quadro = await dataContext.Quadro.findByPk(cidade.uf)
+			
+			quadro.caso_suspeito 	-= pessoa.situacao == 1 ? 1 : 0;
+			quadro.caso_analise 		-= pessoa.situacao == 2 ? 1 : 0;
+			quadro.caso_confirmado  	-= pessoa.situacao == 3 ? 1 : 0;
+			quadro.caso_descartado  	-= pessoa.situacao == 4 ? 1 : 0;
+
+
+			quadro.caso_suspeito 	+= payload.situacao == 1 ? 1 : 0;
+			quadro.caso_analise 	 	+= payload.situacao == 2 ? 1 : 0;
+			quadro.caso_confirmado  	+= payload.situacao == 3 ? 1 : 0;
+			quadro.caso_descartado  	+= payload.situacao == 4 ? 1 : 0;
+			
+			await quadro.save();
+
+			pessoa.situacao = prontuario.situacao;
+			await pessoa.save();
+
+			console.log('Quadro Atualizado', quadro);
+
 			return res.status(201).json({
 				sucesso : true,
 				data : prontuario,

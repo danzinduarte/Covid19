@@ -76,8 +76,6 @@ async function carregaTudo(req, res) {
 				cidades.push(cidade);
 			 }
 		
-		
-		
 	}
 	
 	return res.status(200).json({
