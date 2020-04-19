@@ -10,7 +10,7 @@
       <md-button ng-click=vm.editaPessoa(pessoaId)>
         <md-icon md-svg-src="assets/img/edit.svg"></md-icon> Editar Dados
       </md-button>
-      <md-button ng-click="vm.showTabDialog(ev)">
+      <md-button ng-click="vm.showTabDialog(ev, vm.dataset)">
         <md-icon md-svg-src="assets/img/localization.svg"></md-icon> Alterar Cidade
       </md-button>
       <md-button ng-click=vm.prontuario(pessoaId)>
@@ -48,7 +48,7 @@
         </thead>
         <tbody>
           <tr ng-repeat="prontuario in vm.dsProntuario | filter: orderBy:vm.sortKey">
-            <td>{{prontuario.data_hora}}</td>
+            <td>{{prontuario.data_hora | date: 'dd/MM/yyyy' }}</td>
             <td>{{prontuario.situacao}}</td>
           </tr>
         </tbody>

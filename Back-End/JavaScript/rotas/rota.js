@@ -38,7 +38,6 @@ rota.post('/prontuario', prontuarioController.salvaProntuario);
 
 //Quadro
 rota.get('/quadro', quadroController.carregaTudo);
-rota.get('/quadros', quadroController.carregaCidades);
-rota.post('/quadros', quadroController.salvaQuadro);
+
 //Torna todas as rotas públicas
 module.exports = rota;

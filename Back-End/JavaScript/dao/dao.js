@@ -1,6 +1,6 @@
 
 'use strict';
-
+// criação da conexão com o banco
 var pg = require('pg');
 let Sequelize = require('sequelize'),
     conexao = new Sequelize('Covid', 'postgres', '1234',

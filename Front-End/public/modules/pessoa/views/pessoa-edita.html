@@ -21,7 +21,7 @@
     <div>
       <md-input-container class="data-picker-alinhado-esquerda">
         <label>Data</label>
-        <md-datepicker ng-model="vm.dataset.data_nascimento"></md-datepicker>
+        <md-datepicker dateFormat ='dd/mm/yy' ng-model="vm.dataset.data_nascimento"></md-datepicker>
       </md-input-container>
     </div>
     <md-button type="submit" ng-click="vm.form.$valid && vm.salvaPessoa()" aria-label="Salvar Dados"> Salvar

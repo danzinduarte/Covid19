@@ -16,7 +16,7 @@ function PessoaListaController(PessoaService, pessoaId, CidadeService, Prontuari
     vm.nomeSituacao = nomeSituacao;
     vm.prontuario = prontuario;
     vm.showTabDialog = showTabDialog;
-    
+
 
 
     function init() {
@@ -33,7 +33,7 @@ function PessoaListaController(PessoaService, pessoaId, CidadeService, Prontuari
     init()
 
 
-    function carregaCidades(cidadeId = null) {
+    function carregaCidades(cidadeId) {
         return vm.cidadeService.getCidade(cidadeId)
             .then(function (cidadeModel) {
                 vm.dsCidade = cidadeModel.data;
@@ -73,7 +73,7 @@ function PessoaListaController(PessoaService, pessoaId, CidadeService, Prontuari
     function excluir(pessoaId) {
         let sucesso = function (resposta) {
             if (resposta.sucesso) {
-                toastr.info('Pessoa excluido com sucesso :)');
+                toastr.info('Pessoa excluida com sucesso :)');
             }
             $state.go('pessoa')
         }
@@ -106,24 +106,39 @@ function PessoaListaController(PessoaService, pessoaId, CidadeService, Prontuari
             return resp
         })
     }
-    function showTabDialog(ev){
+
+    function ViewTimContentCtrl($scope, $mdDialog, pessoa) {
+        console.log(pessoa)
+        let teste = this;
+        $scope.hide = function () {
+            $mdDialog.hide();
+        };
+        $scope.cancel = function () {
+            $mdDialog.cancel();
+        };
+    }
+
+    function showTabDialog(ev, pessoa) {
         $mdDialog.show({
             parent: angular.element(document.body),
             targetEvent: ev,
-            templateUrl: "pessoa-prontuario.html",
-            controller: ['$scope', '$mdDialog', function ViewTimContentCtrl ($scope, $mdDialog) {
-                $scope.hide = function () {
-                    $mdDialog.hide();
-                };
-                $scope.cancel = function () {
-                    $mdDialog.cancel();
-                };
-            }],
-            })
-            .then(function(answer) {
-      
+            template: `
+            <md-content class="md-padding">
+                <div layout="row">
+                <md-input-container>
+                    <label>Cidade</label>
+                    <input ng-disabled="true" ng-model="vm.dataset.cidade.nome" type="text" name="nome" ng-required="true">
+                </md-input-container>
+                </div>
+            </md-content>
+            `,
+            controller: ViewTimContentCtrl,
+            locals: { pessoa: pessoa }
+        })
+            .then(function (answer) {
+
                 console.log('Sucesso')
-            }, function() {
-        });
+            }, function () {
+            });
     }
 }
