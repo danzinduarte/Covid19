@@ -10,7 +10,7 @@
         $stateProvider
         .state('prontuario', {
             url: '/prontuario',
-            templateUrl: '/modules/pessoa/views/prontuario.html',
+            templateUrl: '/modules/prontuario/views/prontuario.html',
             controller: 'ProntuarioController',
             controllerAs: 'vm',
             params: {

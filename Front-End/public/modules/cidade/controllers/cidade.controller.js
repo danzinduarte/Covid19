@@ -19,7 +19,6 @@ function CidadeController(CidadeService, $mdDialog, $state, $scope) {
     init()
 
     function carregaCidades() {
-        coluna = 0
         CidadeService.getAll().then(function (cidade) {
             vm.dataset = cidade.data
             return vm.dataset

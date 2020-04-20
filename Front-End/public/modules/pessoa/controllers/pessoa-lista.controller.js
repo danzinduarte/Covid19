@@ -15,7 +15,6 @@ function PessoaListaController(PessoaService, pessoaId, CidadeService, Prontuari
     vm.editaPessoa = editaPessoa;
     vm.nomeSituacao = nomeSituacao;
     vm.prontuario = prontuario;
-    vm.showTabDialog = showTabDialog;
 
 
 
@@ -105,40 +104,5 @@ function PessoaListaController(PessoaService, pessoaId, CidadeService, Prontuari
 
             return resp
         })
-    }
-
-    function ViewTimContentCtrl($scope, $mdDialog, pessoa) {
-        console.log(pessoa)
-        let teste = this;
-        $scope.hide = function () {
-            $mdDialog.hide();
-        };
-        $scope.cancel = function () {
-            $mdDialog.cancel();
-        };
-    }
-
-    function showTabDialog(ev, pessoa) {
-        $mdDialog.show({
-            parent: angular.element(document.body),
-            targetEvent: ev,
-            template: `
-            <md-content class="md-padding">
-                <div layout="row">
-                <md-input-container>
-                    <label>Cidade</label>
-                    <input ng-disabled="true" ng-model="vm.dataset.cidade.nome" type="text" name="nome" ng-required="true">
-                </md-input-container>
-                </div>
-            </md-content>
-            `,
-            controller: ViewTimContentCtrl,
-            locals: { pessoa: pessoa }
-        })
-            .then(function (answer) {
-
-                console.log('Sucesso')
-            }, function () {
-            });
     }
 }

@@ -1,22 +1,30 @@
 angular.module('app.prontuario')
     .controller('ProntuarioController', ProntuarioController);
 
-function ProntuarioController(ProntuarioService, PessoaService, pessoaId, $mdDialog, $state) {
+function ProntuarioController(ProntuarioService, PessoaService, $state, $mdDialog) {
     vm = this;
-    vm.dataset = {}
-    vm.salvaProntuario = salvaProntuario;
-    vm.cancelar = cancelar;
-    vm.carregaPessoas = carregaPessoas;
-    vm.pessoaService = PessoaService;
+    vm.salvaProntuario      = salvaProntuario;
+    vm.cancelar             = cancelar;
+    vm.carregaPessoas       = carregaPessoas;
+    vm.pessoaService        = PessoaService;
+    vm.estados = ('Caso_Confirmado Caso_Suspeito Caso_em_Análise Caso_Descartado').split(' ').map(function (estado) { return { abbrev: estado }; });
+   
 
 
     function init() {
-        carregaProntuarios()
+        carregaPessoas()
     }
     init()
-
+    
+    function carregaPessoas(){
+        vm.dsPessoa = vm.pessoaService.getPessoa()
+            .then(function (pessoaModel) {
+                console.log(vm.dsPessoa)
+                return pessoaModel.data   
+            })
+    }
+    
     function salvaProntuario() {
-        vm.dataset.situacao = 1;
         if (vm.form.$invalid) {
             toastr.error("Erro! Revise seus dados e tente novamente.", "ERRO")
             return
@@ -25,9 +33,9 @@ function ProntuarioController(ProntuarioService, PessoaService, pessoaId, $mdDia
         var prontuarioModel = {},
 
             prontuario = {
-                pessoa_id: vm.dataset.pessoa_id,
-                situacao: vm.dataset.situacao,
-                data_hora: Date.now()
+                pessoa_id:  pessoaModel.data.id,
+                situacao:   vm.dataset.situacao,
+                data_hora:  Date.now()
             }
 
 
@@ -38,10 +46,10 @@ function ProntuarioController(ProntuarioService, PessoaService, pessoaId, $mdDia
             .then(function (resposta) {
                 if (resposta.sucesso = true) {
                     if (prontuarioId) {
-                        toastr.info("Prontuario atualizada com êxito :)", "SUCESSO")
+                        toastr.info("Prontuario atualizado com êxito :)", "SUCESSO")
                     }
                     else {
-                        toastr.success("Prontuario incluída com êxito :)", "SUCESSO")
+                        toastr.success("Prontuario incluído com êxito :)", "SUCESSO")
                     }
                     $state.go('pessoa')
                 }
@@ -50,13 +58,7 @@ function ProntuarioController(ProntuarioService, PessoaService, pessoaId, $mdDia
                 toastr.error("Erro! Revise seus dados e tente novamente.", "ERRO")
             })
     }
-    function carregaPessoas(pessoaId = null) {
-        return vm.pessoaService.getPessoa(pessoaId)
-            .then(function (pessoaModel) {
-                vm.dsPessoa = pessoaModel.data;
-                return pessoaModel.data
-            })
-    }
+  
     function cancelar() {
         $state.go('pessoa')
     }

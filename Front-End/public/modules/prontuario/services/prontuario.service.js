@@ -9,14 +9,17 @@ angular.module('app.prontuario')
             return ds.$get();
         }
 
+        
+        prontuarioFactory.getPessoa = function (nome) {
+            var ds = new api.pessoa();
+            return ds.$get({ pessoaModel: nome })
+        }
+
         prontuarioFactory.save = function (prontuarioModel) {
-            var ds = new api.prontuario();
-            ds.pessoa_id = prontuarioModel.pessoa_id;
-            ds.situacao = prontuarioModel.situacao;
-            ds.id = prontuarioModel.id;
-            if (ds.id) {
-                return ds.$update();
-            }
+            var ds          = new api.prontuario();
+            ds.pessoa_id    = prontuarioModel.pessoa_id;
+            ds.situacao     = prontuarioModel.situacao;
+            ds.id           = prontuarioModel.id;
             return ds.$save();
 
         }

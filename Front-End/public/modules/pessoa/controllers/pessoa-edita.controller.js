@@ -70,7 +70,7 @@ function PessoaEditaController(PessoaService, pessoaId, CidadeService, $mdDialog
         $state.go('pessoa')
     }
     function prontuario() {
-        $state.go('pessoa-prontuario')
+        $state.go('cidade')
     }
 
 }
