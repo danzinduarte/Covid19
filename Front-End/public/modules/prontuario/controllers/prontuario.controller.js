@@ -17,15 +17,9 @@ function ProntuarioController(ProntuarioService, PessoaService, $state, $mdDialo
     init()
     
     async function carregaPessoas(){
-        //Ta pegadno apenas a primeiro pessoas porque nesse método, tu não passou o parâmetro que no caso é o ID
-        // o response.data[0] pega o primeirodado dentro do array,
-        // Passe o id e removaesse [0] é pra fazer oque ? eu escrevi por cima
+       
         const response = await vm.pessoaService.getPessoa();
-
-        /*vm.dsPessoa é um objeto, mas a ap retorna um array */
         vm.dsPessoa = response.data;
-        
-        console.log(vm.dsPessoa)
     }
     
     function salvaProntuario() {//olha o whats
@@ -37,7 +31,7 @@ function ProntuarioController(ProntuarioService, PessoaService, $state, $mdDialo
         var prontuarioModel = {},
 
             prontuario = {
-                pessoa_id:  pessoaModel.data.id,
+                pessoa_id:  vm.dsPessoa.id,
                 situacao:   vm.dataset.situacao,
                 data_hora:  Date.now()
             }

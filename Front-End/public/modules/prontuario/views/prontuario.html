@@ -4,9 +4,15 @@
   </div>
   <md-content class="md-padding">
     <div layout="row" flex="40">
-      <md-input-container>
-        <label>Nome Da Pessoa</label>
-        <input ng-model="vm.dsPessoa.nome" type="text" name="nome" ng-required="true">
+      <md-input-container md-no-float class="md-block">
+        <md-tooltip>Pessoas</md-tooltip>
+        <md-icon md-svg-src="assets/img/estado.svg" style="display:inline-block;"></md-icon>
+        <label>Nome da Pessoa</label>
+        <md-select ng-model="vm.dsPessoa.nome" name="uf" ng-required="true">
+          <md-option ng-repeat="pessoa in vm.dsPessoa" ng-value="pessoa.nome">
+            {{pessoa.nome}}
+          </md-option>
+        </md-select>
       </md-input-container>
       <md-input-container md-no-float class="md-block">
         <md-tooltip>Situação</md-tooltip>
