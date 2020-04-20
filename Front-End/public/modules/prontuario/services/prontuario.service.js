@@ -10,9 +10,9 @@ angular.module('app.prontuario')
         }
 
         
-        prontuarioFactory.getPessoa = function (nome) {
+        prontuarioFactory.getPessoa = function (pessoaId) {
             var ds = new api.pessoa();
-            return ds.$get({ pessoaModel: nome })
+            return ds.$get({ pessoaModel: pessoaId })
         }
 
         prontuarioFactory.save = function (prontuarioModel) {

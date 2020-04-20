@@ -16,15 +16,19 @@ function ProntuarioController(ProntuarioService, PessoaService, $state, $mdDialo
     }
     init()
     
-    function carregaPessoas(){
-        vm.dsPessoa = vm.pessoaService.getPessoa()
-            .then(function (pessoaModel) {
-                console.log(vm.dsPessoa)
-                return pessoaModel.data   
-            })
+    async function carregaPessoas(){
+        //Ta pegadno apenas a primeiro pessoas porque nesse método, tu não passou o parâmetro que no caso é o ID
+        // o response.data[0] pega o primeirodado dentro do array,
+        // Passe o id e removaesse [0] é pra fazer oque ? eu escrevi por cima
+        const response = await vm.pessoaService.getPessoa();
+
+        /*vm.dsPessoa é um objeto, mas a ap retorna um array */
+        vm.dsPessoa = response.data;
+        
+        console.log(vm.dsPessoa)
     }
     
-    function salvaProntuario() {
+    function salvaProntuario() {//olha o whats
         if (vm.form.$invalid) {
             toastr.error("Erro! Revise seus dados e tente novamente.", "ERRO")
             return
